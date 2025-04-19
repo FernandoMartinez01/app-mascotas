@@ -226,7 +226,7 @@ const Dashboard = () => {
       {/* Contenido dinámico según la sección activa */}
       <main className="dashboard-main">
         {currentSection === "stock" && <Stock />}
-        {currentSection === "calendario" && <Calendario />}
+        {currentSection === "calendario" && <Calendario selectedPet={currentView} />}
         {currentSection === "salud" && <Salud />}
       </main>
     </div>

@@ -2,12 +2,18 @@
 
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f8f9fa; /* Fondo más claro */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  background-color: #f8f9fa;
   margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .container {
@@ -134,32 +140,31 @@ button, input {
 
 /* App.css */
 .dashboard-container {
-  background-color: #f8f9fa;
-  min-height: 100vh;
-  padding: 20px;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  overflow: hidden; /* Evitar que el contenido se desborde */
 }
 
 /* Encabezado del Dashboard */
 .dashboard-header {
-  display: flex;
-  justify-content: space-between; /* Espaciado entre los elementos */
-  align-items: center;
+  flex-shrink: 0;
   padding: 10px 20px;
   background-color: #007bff;
-  color: #fff;
-  border-radius: 8px;
-  margin-bottom: 20px; /* Separación del contenido principal */
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Contenedor principal del contenido */
 .dashboard-main {
-  background-color: #fff;
+  flex-grow: 1;
+  overflow-y: auto; /* Habilitar scroll si el contenido es demasiado grande */
   padding: 20px;
+  background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  flex-grow: 1; /* Permite que el contenido principal ocupe el espacio restante */
 }
 
 /* Botón de selección de mascota */
@@ -469,4 +474,105 @@ button, input {
   cursor: pointer;
   font-size: 16px;
   color: red;
+}
+
+.pet-selector {
+  margin-bottom: 20px;
+}
+
+.pet-selector label {
+  margin-right: 10px;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+/* Contenedor del calendario */
+.calendar-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Ajustar el calendario */
+.rbc-calendar {
+  width: 100%;
+  max-width: 1200px; /* Limitar el ancho máximo */
+  height: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+/* Ajustar el menú del calendario */
+.rbc-toolbar {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Permitir que los botones se ajusten en pantallas pequeñas */
+  margin-bottom: 10px;
+}
+
+.rbc-toolbar button {
+  margin: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.rbc-toolbar button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+  .rbc-toolbar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rbc-toolbar button {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}
+
+/* Contenedor de la barra de herramientas personalizada */
+.custom-toolbar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+/* Botones de la barra de herramientas */
+.custom-toolbar button {
+  padding: 10px 15px;
+  font-size: 14px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.custom-toolbar button:hover {
+  background-color: #0056b3;
+}
+
+.custom-toolbar button.active {
+  background-color: #0056b3;
+  font-weight: bold;
 }

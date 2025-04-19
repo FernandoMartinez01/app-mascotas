@@ -19,11 +19,16 @@ const Stock = () => {
   // Cargar los elementos del stock al montar el componente
   useEffect(() => {
     const fetchStockItems = async () => {
+      if (!currentHome) {
+        console.log("currentHome es null o no está definido."); // Log para depurar
+        return;
+      }
+
       try {
-        if (currentHome) {
-          const items = await getStockItems(currentHome.id); // Obtener los elementos del stock vinculados al hogar
-          setStockItems(items);
-        }
+        console.log("Cargando elementos del stock para el hogar:", currentHome.id); // Log para verificar el ID del hogar
+        const items = await getStockItems(currentHome.id); // Obtener los elementos del stock vinculados al hogar
+        console.log("Elementos cargados:", items); // Log para verificar los datos obtenidos
+        setStockItems(items); // Actualizar el estado local con los elementos cargados
       } catch (err) {
         console.error("Error al cargar los elementos del stock:", err.message);
         setError("No se pudieron cargar los elementos del stock. Intenta nuevamente.");
@@ -31,22 +36,29 @@ const Stock = () => {
     };
 
     fetchStockItems();
-  }, [currentHome]);
+  }, [currentHome]); // Ejecutar cada vez que currentHome cambie
+
+  // Mostrar mensaje si no hay un hogar seleccionado
+  if (!currentHome) {
+    return <p>No se ha seleccionado un hogar. Por favor, selecciona o crea un hogar para continuar.</p>;
+  }
 
   // Manejar el envío del formulario para agregar o editar un elemento
   const handleAddOrEditItem = async (e) => {
     e.preventDefault();
     setError("");
-
+  
     if (!newItem.name.trim() || !newItem.quantity.trim()) {
       setError("El nombre y la cantidad son obligatorios.");
+      console.log("Error: Campos obligatorios faltantes"); // Log para depurar
       return;
     }
-
+  
     try {
       if (currentHome) {
         if (editingItem) {
           // Editar un elemento existente
+          console.log("Editando elemento:", editingItem); // Log para depurar
           await updateStockItem(currentHome.id, editingItem.id, newItem); // Actualizar en Firestore
           setStockItems((prevItems) =>
             prevItems.map((item) =>
@@ -56,10 +68,12 @@ const Stock = () => {
           setEditingItem(null); // Limpiar el estado de edición
         } else {
           // Agregar un nuevo elemento
+          console.log("Agregando nuevo elemento:", newItem); // Log para depurar
           const newStockItem = await createStockItem(currentHome.id, newItem); // Crear en Firestore
+          console.log("Nuevo elemento creado:", newStockItem); // Log para verificar el nuevo elemento
           setStockItems((prevItems) => [...prevItems, newStockItem]); // Actualizar el estado local
         }
-
+  
         setNewItem({
           category: "comida",
           name: "",
@@ -68,6 +82,8 @@ const Stock = () => {
           purchaseDate: new Date().toISOString().split("T")[0],
         }); // Limpiar el formulario
         setShowForm(false); // Cerrar el formulario
+      } else {
+        console.log("Error: currentHome es null o no está definido"); // Log para depurar
       }
     } catch (err) {
       console.error("Error al agregar o editar el elemento:", err.message);

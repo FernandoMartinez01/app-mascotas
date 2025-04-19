@@ -203,9 +203,10 @@ export const deletePet = async (petId) => {
 // **Crear un producto en el stock**
 export const createStockItem = async (homeId, item) => {
   try {
-    console.log("createStockItem ejecutado con:", homeId, item);
+    console.log("createStockItem ejecutado con:", homeId, item); // Log para verificar los datos enviados
     const stockRef = collection(db, "homes", homeId, "stock"); // Subcolección 'stock' dentro del hogar
     const docRef = await addDoc(stockRef, {
+      id: "", // Inicialmente vacío, se actualizará después
       name: item.name,
       category: item.category,
       quantity: item.quantity,
@@ -213,7 +214,11 @@ export const createStockItem = async (homeId, item) => {
       purchaseDate: item.purchaseDate,
       createdAt: Timestamp.now(),
     });
-    console.log("Elemento agregado al stock con ID:", docRef.id); // Verificar el ID generado
+
+    // Actualizar el campo `id` con el ID del documento generado
+    await updateDoc(docRef, { id: docRef.id });
+
+    console.log("Elemento agregado al stock con ID:", docRef.id); // Log para verificar el ID generado
     return { id: docRef.id, ...item }; // Retornar el ID junto con los datos
   } catch (error) {
     console.error("Error al agregar el elemento al stock:", error.message);
@@ -224,11 +229,15 @@ export const createStockItem = async (homeId, item) => {
 // **Obtener los productos del stock asociados a un hogar**
 export const getStockItems = async (homeId) => {
   try {
-    const stockQuery = query(collection(db, "stocks"), where("homeId", "==", homeId));
+    console.log("Obteniendo elementos del stock para el hogar:", homeId); // Log para depurar
+    const stockQuery = query(collection(db, "homes", homeId, "stock")); // Subcolección 'stock'
     const querySnapshot = await getDocs(stockQuery);
-    return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const items = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })); // Retornar los datos con el ID
+    console.log("Elementos obtenidos:", items); // Log para verificar los datos obtenidos
+    return items;
   } catch (error) {
-    throw new Error("Error al obtener los productos del stock: " + error.message);
+    console.error("Error al obtener los productos del stock:", error.message);
+    throw new Error("No se pudieron obtener los productos del stock.");
   }
 };
 
@@ -253,5 +262,29 @@ export const deleteStockItem = async (homeId, productId) => {
   } catch (error) {
     console.error("Error al eliminar el producto del stock:", error.message);
     throw new Error("No se pudo eliminar el producto del stock.");
+  }
+};
+
+// **Obtener eventos del calendario**
+export const getCalendarEvents = async (homeId) => {
+  try {
+    const eventsQuery = query(collection(db, "homes", homeId, "calendar"));
+    const querySnapshot = await getDocs(eventsQuery);
+    return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Error al obtener los eventos del calendario:", error.message);
+    throw new Error("No se pudieron obtener los eventos del calendario.");
+  }
+};
+
+// **Guardar un evento en el calendario**
+export const saveCalendarEvent = async (homeId, event) => {
+  try {
+    const calendarRef = collection(db, "homes", homeId, "calendar");
+    const docRef = await addDoc(calendarRef, event);
+    return { id: docRef.id, ...event };
+  } catch (error) {
+    console.error("Error al guardar el evento en el calendario:", error.message);
+    throw new Error("No se pudo guardar el evento en el calendario.");
   }
 };
