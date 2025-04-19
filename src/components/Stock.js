@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useHome } from "../HomeContext"; // Importar el contexto del hogar
-import { createStockItem, getStockItems } from "../authService"; // Funciones para manejar el stock
+import { createStockItem, getStockItems, updateStockItem, deleteStockItem } from "../authService"; // Funciones para manejar el stock
 
 const Stock = () => {
   const { currentHome } = useHome(); // Obtener el hogar actual del contexto
   const [stockItems, setStockItems] = useState([]); // Estado para los elementos del stock
   const [showForm, setShowForm] = useState(false); // Controla si se muestra el formulario
+  const [editingItem, setEditingItem] = useState(null); // Estado para el elemento que se está editando
   const [newItem, setNewItem] = useState({
     category: "comida",
     name: "",
@@ -32,24 +33,33 @@ const Stock = () => {
     fetchStockItems();
   }, [currentHome]);
 
-  // Manejar el envío del formulario para agregar un nuevo elemento
-  const handleAddItem = async (e) => {
+  // Manejar el envío del formulario para agregar o editar un elemento
+  const handleAddOrEditItem = async (e) => {
     e.preventDefault();
-    console.log("handleAddItem ejecutado"); // Verificar si la función se llama
     setError("");
-  
+
     if (!newItem.name.trim() || !newItem.quantity.trim()) {
       setError("El nombre y la cantidad son obligatorios.");
-      console.log("Error: Campos obligatorios faltantes"); // Verificar validación
       return;
     }
-  
+
     try {
       if (currentHome) {
-        console.log("Agregando elemento al hogar:", currentHome.id); // Verificar el ID del hogar
-        const newStockItem = await createStockItem(currentHome.id, newItem); // Llamar a createStockItem
-        console.log("Elemento agregado:", newStockItem); // Verificar el nuevo elemento
-        setStockItems((prevItems) => [...prevItems, newStockItem]); // Actualizar el estado local
+        if (editingItem) {
+          // Editar un elemento existente
+          await updateStockItem(currentHome.id, editingItem.id, newItem); // Actualizar en Firestore
+          setStockItems((prevItems) =>
+            prevItems.map((item) =>
+              item.id === editingItem.id ? { ...item, ...newItem } : item
+            )
+          );
+          setEditingItem(null); // Limpiar el estado de edición
+        } else {
+          // Agregar un nuevo elemento
+          const newStockItem = await createStockItem(currentHome.id, newItem); // Crear en Firestore
+          setStockItems((prevItems) => [...prevItems, newStockItem]); // Actualizar el estado local
+        }
+
         setNewItem({
           category: "comida",
           name: "",
@@ -58,13 +68,29 @@ const Stock = () => {
           purchaseDate: new Date().toISOString().split("T")[0],
         }); // Limpiar el formulario
         setShowForm(false); // Cerrar el formulario
-      } else {
-        console.log("Error: currentHome es null o no está definido");
       }
     } catch (err) {
-      console.error("Error al agregar el elemento al stock:", err.message);
-      setError("No se pudo agregar el elemento al stock. Intenta nuevamente.");
+      console.error("Error al agregar o editar el elemento:", err.message);
+      setError("No se pudo guardar el elemento. Intenta nuevamente.");
     }
+  };
+
+  // Manejar la eliminación de un elemento
+  const handleDeleteItem = async (itemId) => {
+    try {
+      await deleteStockItem(currentHome.id, itemId); // Eliminar de Firestore
+      setStockItems((prevItems) => prevItems.filter((item) => item.id !== itemId)); // Actualizar el estado local
+    } catch (err) {
+      console.error("Error al eliminar el elemento:", err.message);
+      setError("No se pudo eliminar el elemento. Intenta nuevamente.");
+    }
+  };
+
+  // Manejar la edición de un elemento
+  const handleEditItem = (item) => {
+    setEditingItem(item); // Establecer el elemento que se está editando
+    setNewItem(item); // Cargar los datos del elemento en el formulario
+    setShowForm(true); // Mostrar el formulario
   };
 
   // Manejar la cancelación del formulario
@@ -76,6 +102,7 @@ const Stock = () => {
       unit: "unidad",
       purchaseDate: new Date().toISOString().split("T")[0],
     }); // Limpiar el formulario
+    setEditingItem(null); // Limpiar el estado de edición
     setShowForm(false); // Cerrar el formulario
   };
 
@@ -109,9 +136,9 @@ const Stock = () => {
         </button>
       )}
 
-      {/* Formulario para agregar un nuevo elemento */}
+      {/* Formulario para agregar o editar un elemento */}
       {showForm && (
-        <form onSubmit={handleAddItem} className="stock-form">
+        <form onSubmit={handleAddOrEditItem} className="stock-form">
           <select
             value={newItem.category}
             onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
@@ -153,7 +180,7 @@ const Stock = () => {
             required
           />
           <div className="form-buttons">
-            <button type="submit">Aceptar</button>
+            <button type="submit">{editingItem ? "Guardar cambios" : "Aceptar"}</button>
             <button type="button" onClick={handleCancel}>
               Cancelar
             </button>
@@ -172,6 +199,12 @@ const Stock = () => {
             <h3>{item.name}</h3>
             <p>Cantidad: {item.quantity} {item.unit}</p>
             <p>Fecha de compra: {item.purchaseDate}</p>
+            <button className="edit-button" onClick={() => handleEditItem(item)}>
+              ✏️
+            </button>
+            <button className="delete-button" onClick={() => handleDeleteItem(item.id)}>
+              🗑️
+            </button>
           </div>
         ))}
       </div>

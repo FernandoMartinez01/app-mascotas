@@ -204,7 +204,7 @@ export const deletePet = async (petId) => {
 export const createStockItem = async (homeId, item) => {
   try {
     console.log("createStockItem ejecutado con:", homeId, item);
-    const stockRef = collection(db, "homes", homeId, "stock");
+    const stockRef = collection(db, "homes", homeId, "stock"); // Subcolección 'stock' dentro del hogar
     const docRef = await addDoc(stockRef, {
       name: item.name,
       category: item.category,
@@ -233,21 +233,25 @@ export const getStockItems = async (homeId) => {
 };
 
 // **Actualizar un producto en el stock**
-export const updateStockItem = async (productId, updates) => {
+export const updateStockItem = async (homeId, productId, updates) => {
   try {
-    const productRef = doc(db, "stocks", productId);
-    await updateDoc(productRef, updates);
+    const productRef = doc(db, "homes", homeId, "stock", productId); // Referencia al documento en la subcolección
+    await updateDoc(productRef, updates); // Actualizar el documento con los nuevos datos
+    console.log(`Producto con ID ${productId} actualizado correctamente.`);
   } catch (error) {
-    throw new Error("Error al actualizar el producto en el stock: " + error.message);
+    console.error("Error al actualizar el producto en el stock:", error.message);
+    throw new Error("No se pudo actualizar el producto en el stock.");
   }
 };
 
 // **Eliminar un producto del stock**
-export const deleteStockItem = async (productId) => {
+export const deleteStockItem = async (homeId, productId) => {
   try {
-    const productRef = doc(db, "stocks", productId);
-    await deleteDoc(productRef);
+    const productRef = doc(db, "homes", homeId, "stock", productId); // Referencia al documento en la subcolección
+    await deleteDoc(productRef); // Eliminar el documento
+    console.log(`Producto con ID ${productId} eliminado correctamente.`);
   } catch (error) {
-    throw new Error("Error al eliminar el producto del stock: " + error.message);
+    console.error("Error al eliminar el producto del stock:", error.message);
+    throw new Error("No se pudo eliminar el producto del stock.");
   }
 };
