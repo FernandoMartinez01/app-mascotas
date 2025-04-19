@@ -1,129 +1,133 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth } from "firebase/auth"; 
-import { app } from "../firebaseConfig"; 
-import { createPet, linkAccount } from "../authService";  // Funciones para crear mascota y vincular cuenta
+import { getAuth } from "firebase/auth";
+import { app } from "../firebaseConfig";
+import { createHome, linkToHome } from "../authService"; // Importar funciones para crear y vincular hogar
+import { useHome } from "../HomeContext"; // Importar el contexto del hogar
 
 const auth = getAuth(app); // Inicializar auth
 
 const Home = () => {
   const navigate = useNavigate();
-  const [showCreatePet, setShowCreatePet] = useState(false);
-  const [petType, setPetType] = useState("");
-  const [showLinkAccount, setShowLinkAccount] = useState(false);
-  const [newPet, setNewPet] = useState({ name: "", type: "", birthDate: "", weight: "" }); 
-  const [accountCode, setAccountCode] = useState("");
-  const [error, setError] = useState("");
+  const { setCurrentHome } = useHome(); // Obtener la función para actualizar el hogar actual
+  const [showCreateHome, setShowCreateHome] = useState(false); // Estado para mostrar el formulario de crear hogar
+  const [showLinkHome, setShowLinkHome] = useState(false); // Estado para mostrar el formulario de vincular hogar
+  const [homeName, setHomeName] = useState(""); // Estado para el nombre del hogar
+  const [homeCode, setHomeCode] = useState(""); // Estado para el código del hogar
+  const [error, setError] = useState(""); // Estado para manejar errores
 
-  const handlePetTypeSelection = (type) => {
-    setPetType(type);
-  };
-
-  // Función para crear mascota
-  const handleCreatePet = async (e) => {
+  // Función para crear un hogar
+  const handleCreateHome = async (e) => {
     e.preventDefault();
+    setError(""); // Limpiar errores previos
+
+    if (!homeName.trim()) {
+      setError("El nombre del hogar no puede estar vacío.");
+      return;
+    }
+
     try {
-      const userId = auth.currentUser.uid; // Obtener el ID del usuario actual
-      const { linkCode } = await createPet({ ...newPet, type: petType }, userId); // Crear la mascota
-      setShowCreatePet(false);
-      setPetType(""); // Reiniciar el tipo de mascota
-      setNewPet({ name: "", birthDate: "", weight: "" }); // Reiniciar el formulario
-      alert(`Mascota creada con éxito. Código de vinculación: ${linkCode}`); // Mostrar el código al usuario
-  
-      // Redirigir al Dashboard con el nombre de la mascota
-      navigate("/dashboard", { state: { petName: newPet.name, petType: petType } });
+      const userId = auth.currentUser?.uid; // Obtener el ID del usuario actual
+      if (!userId) {
+        setError("No se encontró un usuario autenticado. Por favor, inicia sesión nuevamente.");
+        return;
+      }
+
+      const homeId = await createHome(userId, homeName); // Crear el hogar en Firestore
+      console.log("Hogar creado con ID:", homeId); // Verificar si se devuelve un homeId
+      setCurrentHome({ id: homeId, name: homeName }); // Actualizar el contexto con el nuevo hogar
+      console.log("Contexto actualizado con el hogar:", { id: homeId, name: homeName });
+      alert("Hogar creado con éxito."); // Mostrar mensaje de éxito
+
+      // Redirigir a Mascota.js
+      navigate("/mascota", { state: { homeId } });
+      console.log("Redirigiendo a Mascota.js con homeId:", homeId);
     } catch (err) {
-      setError("Error al crear mascota: " + err.message);
+      console.error("Error al crear el hogar:", err.message);
+      setError("Error al crear el hogar: " + err.message);
     }
   };
 
-
-  // Función para vincular cuenta
-  const handleLinkAccount = async (e) => {
+  // Función para vincular un hogar
+  const handleLinkHome = async (e) => {
     e.preventDefault();
+    setError(""); // Limpiar errores previos
+
+    if (!homeCode.trim()) {
+      setError("El código del hogar no puede estar vacío.");
+      return;
+    }
+
     try {
-      const userId = auth.currentUser.uid; // Obtener el ID del usuario actual
-      const linkedPet = await linkAccount(accountCode, userId); // Vincular la cuenta y obtener la mascota vinculada
-  
-      if (linkedPet) {
-        // Redirigir al Dashboard con el nombre de la mascota vinculada
-        navigate("/dashboard", { state: { petName: linkedPet.name } });
-      } else {
-        setError("No se pudo vincular la cuenta. Intenta nuevamente.");
+      const userId = auth.currentUser?.uid; // Obtener el ID del usuario actual
+      if (!userId) {
+        setError("No se encontró un usuario autenticado. Por favor, inicia sesión nuevamente.");
+        return;
       }
+
+      await linkToHome(homeCode, userId); // Vincular al hogar existente
+      setCurrentHome({ id: homeCode }); // Actualizar el contexto con el hogar vinculado
+      alert("Hogar vinculado con éxito."); // Mostrar mensaje de éxito
+
+      // Redirigir al Dashboard
+      navigate("/dashboard", { state: { homeId: homeCode } });
     } catch (err) {
-      setError("Error al vincular cuenta: " + err.message);
+      console.error("Error al vincular el hogar:", err.message);
+      setError("Error al vincular el hogar: " + err.message);
     }
   };
 
   return (
     <div>
-      <h2>Bienvenido a la Home</h2>
+      <h2>Bienvenido</h2>
+      <p>Elige una opción para continuar:</p>
 
-      {/* Botones para mostrar formularios */}
-      <button onClick={() => setShowCreatePet(true)}>Crear nueva mascota</button>
-      <button onClick={() => setShowLinkAccount(true)}>Vincular cuenta</button>
-
-      {error && <p className="error">{error}</p>}
-
-      {/* Formulario para crear mascota */}
-      {showCreatePet && (
+      {/* Opciones principales */}
+      {!showCreateHome && !showLinkHome && (
         <div>
-          {!petType ? (
-            <div>
-              <h3>Selecciona el tipo de mascota</h3>
-              <button onClick={() => handlePetTypeSelection("Perro")}>Perro</button>
-              <button onClick={() => handlePetTypeSelection("Gato")}>Gato</button>
-              <button onClick={() => setShowCreatePet(false)}>Cancelar</button>
-            </div>
-          ) : (
-            <form onSubmit={handleCreatePet}>
-              <h3>Crear nueva mascota ({petType})</h3>
-              <input
-                type="text"
-                placeholder="Nombre de la mascota"
-                value={newPet.name}
-                onChange={(e) => setNewPet({ ...newPet, name: e.target.value })}
-                required
-              />
-              <input
-                type="date"
-                placeholder="Fecha de nacimiento"
-                value={newPet.birthDate}
-                onChange={(e) => setNewPet({ ...newPet, birthDate: e.target.value })}
-                required
-              />
-              <input
-                type="number"
-                placeholder="Peso (kg) (opcional)"
-                value={newPet.weight}
-                onChange={(e) => setNewPet({ ...newPet, weight: e.target.value })}
-              />
-              <button type="submit">Crear mascota</button>
-              <button type="button" onClick={() => setShowCreatePet(false)}>
-                Cancelar
-              </button>
-            </form>
-          )}
+          <button onClick={() => setShowCreateHome(true)}>Crear hogar</button>
+          <button onClick={() => setShowLinkHome(true)}>Vincular hogar</button>
         </div>
       )}
 
-      {/* Formulario para vincular cuenta */}
-      {showLinkAccount && (
-        <form onSubmit={handleLinkAccount}>
-          <h3>Vincular cuenta</h3>
+      {/* Formulario para crear hogar */}
+      {showCreateHome && (
+        <form onSubmit={handleCreateHome}>
+          <h3>Crear un nuevo hogar</h3>
           <input
             type="text"
-            placeholder="Código de vinculación"
-            value={accountCode}
-            onChange={(e) => setAccountCode(e.target.value)}
+            placeholder="Nombre del hogar"
+            value={homeName}
+            onChange={(e) => setHomeName(e.target.value)}
+            required
           />
-          <button type="submit">Vincular cuenta</button>
-          <button type="button" onClick={() => setShowLinkAccount(false)}>
-            Cancelar
+          <button type="submit">Crear hogar</button>
+          <button type="button" onClick={() => setShowCreateHome(false)}>
+            Volver
           </button>
         </form>
       )}
+
+      {/* Formulario para vincular hogar */}
+      {showLinkHome && (
+        <form onSubmit={handleLinkHome}>
+          <h3>Vincular a un hogar existente</h3>
+          <input
+            type="text"
+            placeholder="Código del hogar"
+            value={homeCode}
+            onChange={(e) => setHomeCode(e.target.value)}
+            required
+          />
+          <button type="submit">Vincular hogar</button>
+          <button type="button" onClick={() => setShowLinkHome(false)}>
+            Volver
+          </button>
+        </form>
+      )}
+
+      {/* Mostrar errores */}
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };
