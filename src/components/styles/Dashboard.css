@@ -1,0 +1,289 @@
+/* Contenedor principal */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: #f8f9fa; /* Fondo claro */
+  }
+  
+  /* Encabezado */
+  .dashboard-header {
+    background-color: transparent; /* Sin fondo */
+    padding: 0; /* Elimina el padding si no es necesario */
+  }
+
+  /* Renglón superior */
+  .dashboard-top-bar {
+    position: relative; /* Necesario para posicionar los menús en relación con este contenedor */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #d4edda; /* Verde claro */
+    color: #155724; /* Texto verde oscuro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+  }
+  
+  /* Botones del renglón superior */
+  .menu-button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #28a745; /* Verde */
+    color: #fff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .menu-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Menú de navegación */
+  .dashboard-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background-color: #f8f9fa; /* Fondo claro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #0056b3;
+    color: #fff;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .nav-button:hover {
+    background-color: #003d80;
+    transform: scale(1.05);
+  }
+  
+  .nav-button.active {
+    background-color: #ffc107; /* Color amarillo para el botón activo */
+    color: #333;
+  }
+
+  /* Contenido dinámico */
+.dashboard-main {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    animation: fadeIn 0.5s ease-in-out; /* Animación al cambiar de sección */
+  }
+  
+  /* Animación de transición */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Menú desplegable de mascotas */
+  .pet-menu-container {
+    position: relative;
+  }
+  
+  .menu-button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #28a745; /* Verde */
+    color: #fff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .menu-button:hover {
+    background-color: #218838;
+  }
+  
+  .pet-menu {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    top: 10%;  /* Posiciona el menú justo debajo del botón */
+    left: 0; /* Alinea el menú con el botón */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    width: 200px;
+  }
+
+  .pet-menu.show {
+    display: block; /* Muestra el menú cuando está activo */
+  }
+  
+  .pet-menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+  }
+  
+  .pet-menu-item {
+    display: block;
+    padding: 12px 16px; /* Espaciado interno */
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #333333; /* Texto oscuro */
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-top: 1px solid #e0e0e0; /* Línea divisoria */
+}
+  
+  .pet-menu-item:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .pet-name {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .delete-pet-button {
+    background: none;
+    border: none;
+    color: #dc3545; /* Rojo */
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .delete-pet-button:hover {
+    color: #a71d2a;
+  }
+  
+  /* Menú de configuración */
+  .config-menu-container {
+    position: relative;
+  }
+
+  .config-menu {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    top: 10%; /* Justo debajo del botón, con un pequeño margen */
+    right: 0; /* Alinea el menú con el botón */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    width: 200px;
+  }
+  
+  .config-menu.show {
+    display: block; /* Muestra el menú cuando está activo */
+  }
+  
+  .config-menu-item {
+    display: block;
+    padding: 12px 16px; /* Espaciado interno */
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #333333; /* Texto oscuro */
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-top: 1px solid #e0e0e0; /* Línea divisoria */
+}
+  
+  .config-menu-item:hover {
+    background-color: #f8f9fa; /* Fondo claro al pasar el mouse */
+    color: #007bff; /* Texto azul */
+  }
+  
+  /* Popup de confirmación */
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+  }
+  
+  .popup {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 300px;
+  }
+  
+  .popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .popup-button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .popup-button.accept {
+    background-color: #28a745; /* Verde */
+    color: #fff;
+  }
+  
+  .popup-button.accept:hover {
+    background-color: #218838;
+  }
+  
+  .popup-button.cancel {
+    background-color: #dc3545; /* Rojo */
+    color: #fff;
+  }
+  
+  .popup-button.cancel:hover {
+    background-color: #a71d2a;
+  }
+  
+  /* Errores */
+  .dashboard-error {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    color: #ff4d4d;
+    margin: 10px 20px;
+  }
+  
+  /* Contenido dinámico */
+  .dashboard-main {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }

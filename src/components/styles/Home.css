@@ -1,0 +1,141 @@
+/* Contenedor principal */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw; /* Asegura que ocupe todo el ancho */
+  overflow: hidden; /* Evita scroll innecesario */
+  position: relative; /* Necesario para el fondo */
+}
+  
+  /* Contenedor translúcido */
+  .home-box {
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco translúcido */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 12px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
+    width: 100%;
+    max-width: 400px; /* Limita el ancho máximo */
+    text-align: center; /* Centra el contenido */
+  }
+  
+  /* Título principal */
+  .home-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  /* Subtítulo */
+  .home-subtitle {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  /* Opciones principales */
+  .home-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Espaciado entre botones */
+  }
+  
+  /* Separador visual */
+  .home-divider {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    color: #555;
+    margin: 10px 0;
+  }
+  
+  /* Formularios */
+  .home-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Espaciado entre los elementos del formulario */
+  }
+  
+  /* Títulos de formularios */
+  .home-form-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  /* Inputs */
+  .home-input {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%; /* Asegura que los inputs ocupen todo el ancho */
+    max-width: 300px; /* Limita el ancho máximo */
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .home-input:focus {
+    border-color: #007bff; /* Cambia el color del borde al enfocar */
+  }
+  
+  /* Botones */
+  .home-button,
+  .home-back-button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    width: 100%; /* Asegura que todos los botones tengan el mismo ancho */
+    max-width: 300px; /* Limita el ancho máximo */
+    text-align: center; /* Centra el texto dentro del botón */
+    margin-bottom: 10px;
+  }
+  
+  /* Botón principal */
+  .home-button {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .home-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Botón de volver */
+  .home-back-button {
+    background-color: #6c757d;
+    color: #fff;
+  }
+  
+  .home-back-button:hover {
+    background-color: #5a6268;
+  }
+  
+  /* Mensajes de error */
+  .home-error {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    color: #ff4d4d;
+    margin-top: 10px;
+  }
+  
+  /* Media query para pantallas pequeñas */
+  @media (max-width: 768px) {
+    .home-container {
+      background-size: contain; /* Ajusta la imagen para que se mantenga visible completa */
+      background-position: bottom; /* Ajusta la posición para pantallas pequeñas */
+    }
+  }

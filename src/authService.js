@@ -52,7 +52,7 @@ export const loginWithGoogle = async () => {
       throw new Error("No se pudo autenticar al usuario con Google.");
     }
 
-    console.log("Usuario autenticado con Google:", user); // Verificar el usuario autenticado
+    // console.log("Usuario autenticado con Google:", user); // Verificar el usuario autenticado
     return user; // Retornar el usuario autenticado
   } catch (error) {
     console.error("Error al iniciar sesión con Google:", error.message);
@@ -83,7 +83,7 @@ export const createHome = async (userId, homeName) => {
     // Agregar el ID del documento al propio documento
     await updateDoc(homeDoc, { id: homeDoc.id });
 
-    console.log("Hogar creado con ID:", homeDoc.id); // Verificar el ID del hogar
+    // console.log("Hogar creado con ID:", homeDoc.id); // Verificar el ID del hogar
 
     // Retornar el ID y los datos que acabas de guardar
     return {
@@ -145,7 +145,7 @@ export const createPet = async (petData, homeId) => {
     const petRef = await addDoc(collection(db, "pets"), {
       ...petData,
       linkCode, // Código de vinculación
-      homeId, // Asociar la mascota al hogar
+      homeId: { id: homeId }, // Asociar la mascota al hogar
       createdAt: Timestamp.now(), // Fecha de creación
     });
 
@@ -181,12 +181,21 @@ export const linkAccount = async (accountCode, userId) => {
 // **Obtener las mascotas vinculadas a un hogar**
 export const getLinkedPets = async (homeId) => {
   try {
-    const petsQuery = query(collection(db, "pets"), where("homeId", "==", homeId));
+
+    // Ajustar la consulta para comparar el subcampo 'homeId.id'
+    const petsQuery = query(collection(db, "pets"), where("homeId.id", "==", homeId));
     const querySnapshot = await getDocs(petsQuery);
+
+    if (querySnapshot.empty) {
+      return []; // Retornar un arreglo vacío si no hay resultados
+    }
+
     const pets = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    return pets; // Retornar las mascotas vinculadas al hogar
+    // console.log("Mascotas obtenidas:", pets); // Log para depurar
+    return pets;
   } catch (error) {
-    throw new Error("Error al obtener mascotas vinculadas: " + error.message);
+    console.error("Error al obtener mascotas vinculadas:", error.message);
+    throw new Error("No se pudieron obtener las mascotas vinculadas.");
   }
 };
 
@@ -203,7 +212,6 @@ export const deletePet = async (petId) => {
 // **Crear un producto en el stock**
 export const createStockItem = async (homeId, item) => {
   try {
-    console.log("createStockItem ejecutado con:", homeId, item); // Log para verificar los datos enviados
     const stockRef = collection(db, "homes", homeId, "stock"); // Subcolección 'stock' dentro del hogar
     const docRef = await addDoc(stockRef, {
       id: "", // Inicialmente vacío, se actualizará después
@@ -218,7 +226,6 @@ export const createStockItem = async (homeId, item) => {
     // Actualizar el campo `id` con el ID del documento generado
     await updateDoc(docRef, { id: docRef.id });
 
-    console.log("Elemento agregado al stock con ID:", docRef.id); // Log para verificar el ID generado
     return { id: docRef.id, ...item }; // Retornar el ID junto con los datos
   } catch (error) {
     console.error("Error al agregar el elemento al stock:", error.message);
@@ -229,12 +236,30 @@ export const createStockItem = async (homeId, item) => {
 // **Obtener los productos del stock asociados a un hogar**
 export const getStockItems = async (homeId) => {
   try {
-    console.log("Obteniendo elementos del stock para el hogar:", homeId); // Log para depurar
-    const stockQuery = query(collection(db, "homes", homeId, "stock")); // Subcolección 'stock'
-    const querySnapshot = await getDocs(stockQuery);
-    const items = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })); // Retornar los datos con el ID
-    console.log("Elementos obtenidos:", items); // Log para verificar los datos obtenidos
-    return items;
+    const stockRef = collection(db, "homes", homeId, "stock");
+    const querySnapshot = await getDocs(stockRef);
+
+    // Verificar si la subcolección está vacía
+    if (querySnapshot.empty) {
+      // console.log("La subcolección 'stock' está vacía o no existe.");
+      return []; // Retornar un arreglo vacío
+    }
+
+    // Mapea los documentos obtenidos y verifica que los datos sean válidos
+    const stockItems = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+
+      // Validar que los datos tengan el formato esperado
+      if (typeof data.name !== "string") {
+        console.error(`El campo 'name' no es una cadena en el documento ${doc.id}`);
+        throw new Error("Formato de datos incorrecto en el stock.");
+      }
+
+      return { id: doc.id, ...data };
+    });
+
+    // console.log("Productos del stock obtenidos:", stockItems);
+    return stockItems;
   } catch (error) {
     console.error("Error al obtener los productos del stock:", error.message);
     throw new Error("No se pudieron obtener los productos del stock.");
@@ -244,9 +269,9 @@ export const getStockItems = async (homeId) => {
 // **Actualizar un producto en el stock**
 export const updateStockItem = async (homeId, productId, updates) => {
   try {
-    const productRef = doc(db, "homes", homeId, "stock", productId); // Referencia al documento en la subcolección
+    console.log("Actualizando producto:", productId, "con datos:", updates); // Log para depurar
+    const productRef = doc(db, "homes", homeId, "stock", productId);
     await updateDoc(productRef, updates); // Actualizar el documento con los nuevos datos
-    console.log(`Producto con ID ${productId} actualizado correctamente.`);
   } catch (error) {
     console.error("Error al actualizar el producto en el stock:", error.message);
     throw new Error("No se pudo actualizar el producto en el stock.");
@@ -258,7 +283,7 @@ export const deleteStockItem = async (homeId, productId) => {
   try {
     const productRef = doc(db, "homes", homeId, "stock", productId); // Referencia al documento en la subcolección
     await deleteDoc(productRef); // Eliminar el documento
-    console.log(`Producto con ID ${productId} eliminado correctamente.`);
+    // console.log(`Producto con ID ${productId} eliminado correctamente.`);
   } catch (error) {
     console.error("Error al eliminar el producto del stock:", error.message);
     throw new Error("No se pudo eliminar el producto del stock.");
@@ -268,7 +293,7 @@ export const deleteStockItem = async (homeId, productId) => {
 // **Obtener eventos del calendario**
 export const getCalendarEvents = async (homeId) => {
   try {
-    console.log("Obteniendo eventos para el hogar:", homeId); // Log para depurar
+    // console.log("Obteniendo eventos para el hogar:", homeId); // Log para depurar
     const eventsQuery = query(collection(db, "homes", homeId, "calendar")); // Subcolección 'calendar'
     const querySnapshot = await getDocs(eventsQuery);
     const events = querySnapshot.docs.map((doc) => {
@@ -280,7 +305,7 @@ export const getCalendarEvents = async (homeId) => {
         end: data.end.toDate(), // Convertir el Timestamp a Date
       };
     });
-    console.log("Eventos obtenidos:", events); // Log para verificar los datos obtenidos
+    // console.log("Eventos obtenidos:", events); // Log para verificar los datos obtenidos
     return events;
   } catch (error) {
     console.error("Error al obtener los eventos del calendario:", error.message);
@@ -299,7 +324,7 @@ export const createCalendarEvent = async (homeId, event) => {
       createdAt: Timestamp.now(), // Fecha de creación
     });
 
-    console.log("Evento creado con ID:", docRef.id); // Log para depurar
+    // console.log("Evento creado con ID:", docRef.id); // Log para depurar
     return { id: docRef.id, ...event }; // Retornar el ID junto con los datos del evento
   } catch (error) {
     console.error("Error al crear el evento en el calendario:", error.message);
@@ -315,7 +340,7 @@ export const updateCalendarEvent = async (homeId, eventId, updatedEvent) => {
       start: Timestamp.fromDate(updatedEvent.start),
       end: Timestamp.fromDate(updatedEvent.end),
     });
-    console.log("Evento actualizado correctamente.");
+    // console.log("Evento actualizado correctamente.");
   } catch (error) {
     console.error("Error al actualizar el evento:", error.message);
     throw new Error("No se pudo actualizar el evento.");
@@ -326,7 +351,7 @@ export const deleteCalendarEvent = async (homeId, eventId) => {
   try {
     const eventRef = doc(db, "homes", homeId, "calendar", eventId);
     await deleteDoc(eventRef);
-    console.log("Evento eliminado correctamente.");
+    // console.log("Evento eliminado correctamente.");
   } catch (error) {
     console.error("Error al eliminar el evento:", error.message);
     throw new Error("No se pudo eliminar el evento.");

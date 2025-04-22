@@ -1,0 +1,110 @@
+/* Contenedor principal */
+.salud-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa; /* Fondo claro */
+    min-height: 100vh;
+  }
+  
+  /* Título principal */
+  .salud-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Mensajes de error */
+  .salud-error {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    color: #ff4d4d;
+    margin-bottom: 20px;
+  }
+  
+  /* Contenedor de cada mascota */
+  .pet-section {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  /* Secciones internas */
+  .section {
+    margin-bottom: 20px;
+  }
+  
+  /* Títulos de las secciones */
+  .section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff; /* Azul */
+    margin-bottom: 10px;
+  }
+  
+  /* Detalles de las secciones */
+  .section-detail {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  /* Lista de vacunas */
+  .vaccine-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .vaccine-item {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  /* Texto cuando no hay vacunas */
+  .no-vaccines {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 10px;
+  }
+  
+  /* Botón para agregar vacunas */
+  .add-vaccine-button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #28a745; /* Verde */
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .add-vaccine-button:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+  }
+  
+  /* Historial clínico */
+  .clinical-history {
+    background-color: #f8f9fa; /* Fondo claro */
+    border-radius: 8px;
+    padding: 10px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    color: #555;
+  }

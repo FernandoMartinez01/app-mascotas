@@ -1,0 +1,161 @@
+/* Contenedor principal */
+.mascota-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw; /* Asegura que ocupe todo el ancho */
+    overflow: hidden; /* Evita scroll innecesario */
+    position: relative; /* Necesario para el fondo */
+  }
+  
+  /* Caja translúcida */
+  .mascota-box {
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo translúcido */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
+    width: 100%;
+    max-width: 400px; /* Limita el ancho máximo */
+    text-align: center;
+    z-index: 1; /* Asegura que el contenido esté sobre el fondo */
+  }
+  
+  /* Título principal */
+  .mascota-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Subtítulo */
+  .mascota-subtitle {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  /* Selección del tipo de mascota */
+  .mascota-selection {
+    display: flex;
+    justify-content: center; /* Centra los botones horizontalmente */
+    align-items: center; /* Centra los botones verticalmente */
+    gap: 45px; /* Espaciado entre los botones */
+  }
+  
+  /* Botones grandes */
+  .mascota-button {
+    padding: 0; /* Elimina el padding interno del botón */
+    border: none;
+    border-radius: 12px; /* Bordes redondeados */
+    cursor: pointer;
+    background-color: transparent; /* Elimina el color de fondo del botón */
+    width: 120px; /* Ancho fijo para que sean cuadrados */
+    height: 180px; /* Altura fija para que sean cuadrados */
+    display: flex;
+    justify-content: center; /* Centra el contenido dentro del botón */
+    align-items: center; /* Centra el contenido dentro del botón */
+    overflow: hidden; /* Asegura que la imagen no se desborde */
+    transition: transform 0.2s ease;
+  }
+  
+  .mascota-button:hover {
+    transform: scale(1.05); /* Efecto de agrandamiento al pasar el mouse */
+  }
+  
+  /* Formulario */
+  .mascota-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Espaciado entre los elementos del formulario */
+  }
+  
+  /* Título del formulario */
+  .mascota-form-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  /* Inputs */
+  .mascota-input {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%; /* Asegura que los inputs ocupen todo el ancho */
+    max-width: 300px; /* Limita el ancho máximo */
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .mascota-input:focus {
+    border-color: #007bff; /* Cambia el color del borde al enfocar */
+  }
+  
+  /* Select */
+  .mascota-select {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%; /* Asegura que el select ocupe todo el ancho */
+    max-width: 300px; /* Limita el ancho máximo */
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .mascota-select:focus {
+    border-color: #007bff; /* Cambia el color del borde al enfocar */
+  }
+  
+  /* Mensajes de error */
+  .mascota-error {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    color: #ff4d4d;
+    margin-top: 10px;
+  }
+  
+  /* Media query para pantallas pequeñas */
+  @media (max-width: 768px) {
+    .mascota-button {
+      font-size: 16px; /* Reduce el tamaño del texto en pantallas pequeñas */
+      padding: 15px 30px; /* Ajusta el tamaño de los botones */
+    }
+  
+    .mascota-input,
+    .mascota-select {
+      max-width: 100%; /* Asegura que los inputs ocupen todo el ancho disponible */
+    }
+  }
+
+/* Imágenes dentro de los botones */
+.mascota-button-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ajusta la imagen dentro del botón sin recortarla */
+  }
+
+/* Media query para pantallas pequeñas */
+@media (max-width: 768px) {
+    .mascota-button {
+      width: 120px; /* Mantén el ancho fijo */
+      height: 180px; /* Mantén la altura fija */
+      padding: 0; /* Asegúrate de que no haya padding adicional */
+    }
+  
+    .mascota-input,
+    .mascota-select {
+      max-width: 100%; /* Asegura que los inputs ocupen todo el ancho disponible */
+    }
+  }

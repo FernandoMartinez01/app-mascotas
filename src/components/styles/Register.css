@@ -1,0 +1,117 @@
+/* Contenedor principal */
+.register-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../../assets/images/login-background.jpg'); /* Usa la misma imagen del Login */
+    background-size: cover;
+    background-position: center 80%; /* Ajusta la posición de la imagen */
+    background-repeat: no-repeat;
+    padding: 20px;
+  }
+  
+  /* Contenedor translúcido */
+  .register-box {
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco translúcido */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 12px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
+    width: 100%;
+    max-width: 400px; /* Limita el ancho máximo */
+    text-align: center; /* Centra el contenido */
+  }
+  
+  /* Título */
+  .register-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Formulario */
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 15px; /* Espaciado entre los elementos del formulario */
+  }
+  
+  /* Inputs */
+  .register-input {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%; /* Asegura que los inputs ocupen todo el ancho */
+    max-width: 300px; /* Limita el ancho máximo */
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .register-input:focus {
+    border-color: #007bff; /* Cambia el color del borde al enfocar */
+  }
+  
+  /* Botones */
+  .register-button,
+  .register-back-button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    width: 100%; /* Asegura que todos los botones tengan el mismo ancho */
+    max-width: 300px; /* Limita el ancho máximo */
+    text-align: center; /* Centra el texto dentro del botón */
+    margin-bottom: 10px;
+  }
+  
+  /* Botón de crear cuenta */
+  .register-button {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .register-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Botón de volver */
+  .register-back-button {
+    background-color: #6c757d;
+    color: #fff;
+  }
+  
+  .register-back-button:hover {
+    background-color: #5a6268;
+  }
+  
+  /* Mensajes de éxito y error */
+  .register-success {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    color: #28a745;
+    margin-top: 10px;
+  }
+  
+  .register-error {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    color: #ff4d4d;
+    margin-top: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .register-container {
+      background-size: contain; /* Ajusta la imagen para que se mantenga visible completa */
+      background-position: bottom; /* Opcional: ajusta la posición para pantallas pequeñas */
+    }
+  }

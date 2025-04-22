@@ -7,6 +7,8 @@ import { useHome } from "../HomeContext"; // Importar el contexto del hogar
 import Stock from "./Stock";
 import Calendario from "./Calendario";
 import Salud from "./Salud";
+import "./styles/Dashboard.css";
+import { useLoading } from "../context/LoadingContext";
 
 const auth = getAuth(app);
 
@@ -21,10 +23,12 @@ const Dashboard = () => {
   const [error, setError] = useState(""); // Estado para manejar errores
   const [showConfirmPopup, setShowConfirmPopup] = useState(false); // Controla si se muestra el popup
   const [petToDelete, setPetToDelete] = useState(null); // Almacena la mascota que se desea eliminar
+  const { setLoading } = useLoading();
 
   // Cargar las mascotas vinculadas al hogar actual
   useEffect(() => {
     const fetchLinkedPets = async () => {
+      setLoading(true);
       try {
         if (currentHome) {
           const pets = await getLinkedPets(currentHome.id); // Obtener mascotas vinculadas al hogar actual
@@ -33,6 +37,8 @@ const Dashboard = () => {
       } catch (error) {
         console.error("Error al obtener mascotas vinculadas:", error.message);
         setError("No se pudieron cargar las mascotas. Intenta nuevamente.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -48,6 +54,7 @@ const Dashboard = () => {
   // Confirmar la eliminación de la mascota
   const confirmDeletePet = async () => {
     if (petToDelete) {
+      setLoading(true);
       try {
         await deletePet(petToDelete); // Eliminar la mascota de Firestore
         setLinkedPets((prevPets) => prevPets.filter((pet) => pet.id !== petToDelete)); // Actualizar el estado local
@@ -56,6 +63,7 @@ const Dashboard = () => {
         console.error("Error al eliminar la mascota:", error.message);
         setError("No se pudo eliminar la mascota. Intenta nuevamente.");
       } finally {
+        setLoading(false); 
         setShowConfirmPopup(false); // Ocultar el popup
         setPetToDelete(null); // Limpiar la mascota seleccionada
       }
@@ -70,12 +78,15 @@ const Dashboard = () => {
 
   // Manejar el cierre de sesión
   const handleLogout = async () => {
+    setLoading(true);
     try {
       await logoutUser();
       navigate("/"); // Redirigir al inicio de sesión
     } catch (error) {
       console.error("Error al cerrar sesión:", error.message);
       setError("No se pudo cerrar sesión. Intenta nuevamente.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -95,140 +106,141 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <header className="dashboard-header">
-        {/* Menú de navegación */}
-        <nav className="dashboard-nav">
-          <button
-            className={`nav-button ${currentSection === "stock" ? "active" : ""}`}
-            onClick={() => {
-              setCurrentSection("stock");
-              setCurrentView("Todas");
-              setShowPetMenu(false);
-            }}
-          >
-            Stock
-          </button>
-          <button
-            className={`nav-button ${currentSection === "calendario" ? "active" : ""}`}
-            onClick={() => setCurrentSection("calendario")}
-          >
-            Calendario
-          </button>
-          <button
-            className={`nav-button ${currentSection === "salud" ? "active" : ""}`}
-            onClick={() => setCurrentSection("salud")}
-          >
-            Salud
-          </button>
-        </nav>
+      {/* Renglón superior */}
+      <div className="dashboard-top-bar">
 
-        {/* Menú desplegable de mascotas */}
-        {currentSection !== "stock" && (
-          <div style={{ position: "relative" }}>
-            <button
-              onClick={() => setShowPetMenu(!showPetMenu)}
-              className="menu-button"
-            >
-              🐾 {currentView}
-            </button>
-            {showPetMenu && (
-              <div className="menu-container">
-                <ul style={{ listStyle: "none", padding: "0", margin: "0" }}>
-                  {linkedPets.map((pet) => (
-                    <li
-                      key={pet.id}
-                      className="menu-item"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      <span
-                        onClick={() => setCurrentView(pet.name)}
-                        style={{ cursor: "pointer" }}
-                      >
-                        {pet.name}
-                      </span>
-                      <button
-                        onClick={() => handleConfirmDelete(pet.id)} // Mostrar el popup de confirmación
-                        style={{
-                          background: "none",
-                          border: "none",
-                          color: "red",
-                          cursor: "pointer",
-                        }}
-                        title="Eliminar mascota"
-                      >
-                        🗑️
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  className="menu-item"
-                  onClick={() => setCurrentView("Todas")}
-                >
-                  Ver todas
-                </button>
-                <button
-                  className="menu-item"
-                  onClick={handleCreateNewPet} // Redirigir a Mascota.js
-                >
-                  Crear nueva mascota
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Botón de configuración */}
-        <div style={{ position: "relative" }}>
           <button
-            onClick={() => setShowConfigMenu(!showConfigMenu)}
+            onClick={() => setShowPetMenu(!showPetMenu)}
             className="menu-button"
           >
-            ⚙ Configuración
+            🐾 {currentView}
           </button>
-          {showConfigMenu && (
-            <div className="menu-container" style={{ right: "0", left: "auto" }}>
-              <button className="menu-item" onClick={handleShareHome}>
-                Compartir hogar
-              </button>
-              <button className="menu-item" onClick={handleLogout}>
-                Cerrar sesión
-              </button>
-            </div>
-          )}
+        
+        <button
+          onClick={() => setShowConfigMenu(!showConfigMenu)}
+          className="menu-button"
+        >
+          ⚙ Configuración
+        </button>
+      </div>
+  
+      {/* Menú de navegación */}
+      <nav className="dashboard-nav">
+        <button
+          className={`nav-button ${currentSection === "stock" ? "active" : ""}`}
+          onClick={() => {
+            setCurrentSection("stock");
+            setCurrentView("Todas");
+            setShowPetMenu(false);
+          }}
+        >
+          Stock
+        </button>
+        <button
+          className={`nav-button ${currentSection === "calendario" ? "active" : ""}`}
+          onClick={() => setCurrentSection("calendario")}
+        >
+          Calendario
+        </button>
+        <button
+          className={`nav-button ${currentSection === "salud" ? "active" : ""}`}
+          onClick={() => setCurrentSection("salud")}
+        >
+          Salud
+        </button>
+      </nav>
+  
+      {/* Contenido dinámico */}
+      <main className="dashboard-main">
+        {currentSection === "stock" && <Stock />}
+        {currentSection === "calendario" && (
+          <Calendario selectedPet={currentView} />
+        )}
+        {currentSection === "salud" && (
+          <Salud selectedPet={currentView} currentHome={currentHome} />
+        )}
+      </main>
+  
+      {/* Menú desplegable de mascotas */}
+      {showPetMenu && (
+        <div className="pet-menu show">
+          <ul className="pet-menu-list">
+            {linkedPets.map((pet) => (
+              <li key={pet.id} className="pet-menu-item">
+                <span
+                  onClick={() => setCurrentView(pet.name)}
+                  className="pet-name"
+                >
+                  {pet.name}
+                </span>
+                <button
+                  onClick={() => handleConfirmDelete(pet.id)}
+                  className="delete-pet-button"
+                  title="Eliminar mascota"
+                >
+                  🗑️
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button
+            className="pet-menu-item"
+            onClick={() => setCurrentView("Todas")}
+          >
+            Ver todas
+          </button>
+          <button
+            className="pet-menu-item"
+            onClick={handleCreateNewPet}
+          >
+            Crear nueva mascota
+          </button>
         </div>
-      </header>
-
+      )}
+  
+      {/* Menú de configuración */}
+      {showConfigMenu && (
+        <div className="config-menu show">
+          <button className="config-menu-item" onClick={handleShareHome}>
+            Compartir hogar
+          </button>
+          <button className="config-menu-item" onClick={handleLogout}>
+            Cerrar sesión
+          </button>
+        </div>
+      )}
+  
       {/* Popup de confirmación */}
       {showConfirmPopup && (
         <div className="popup-overlay">
-            <div className="popup">
-            <h3>¿Deseas desvincular a <strong>{linkedPets.find(pet => pet.id === petToDelete)?.name}</strong> de tu hogar?</h3>
+          <div className="popup">
+            <h3>
+              ¿Deseas desvincular a{" "}
+              <strong>
+                {linkedPets.find((pet) => pet.id === petToDelete)?.name}
+              </strong>{" "}
+              de tu hogar?
+            </h3>
             <div className="popup-buttons">
-                <button onClick={confirmDeletePet} style={{ backgroundColor: "green", color: "white" }}>
+              <button
+                onClick={confirmDeletePet}
+                className="popup-button accept"
+              >
                 Aceptar
-                </button>
-                <button onClick={cancelDeletePet} style={{ backgroundColor: "red", color: "white" }}>
+              </button>
+              <button
+                onClick={cancelDeletePet}
+                className="popup-button cancel"
+              >
                 Cancelar
-                </button>
+              </button>
             </div>
-            </div>
+          </div>
         </div>
-        )}
-
+      )}
+  
       {/* Mostrar errores */}
-      {error && <p className="error">{error}</p>}
-
-      {/* Contenido dinámico según la sección activa */}
-      <main className="dashboard-main">
-        {currentSection === "stock" && <Stock />}
-        {currentSection === "calendario" && <Calendario selectedPet={currentView} />}
-        {currentSection === "salud" && <Salud />}
-      </main>
+      {error && <p className="dashboard-error">{error}</p>}
     </div>
   );
 };

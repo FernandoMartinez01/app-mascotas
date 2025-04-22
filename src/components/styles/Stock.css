@@ -1,0 +1,204 @@
+/* Contenedor principal */
+.stock-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa; /* Fondo claro */
+    min-height: 100vh;
+  }
+  
+  /* Título */
+  .stock-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Mensajes de error */
+  .stock-error {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 14px;
+    color: #ff4d4d;
+    margin-bottom: 20px;
+  }
+  
+  /* Botón para agregar elementos */
+  .stock-add-button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007bff; /* Azul */
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .stock-add-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  /* Formulario */
+  .stock-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+  }
+  
+  .stock-input,
+  .stock-select {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+  
+  .stock-input:focus,
+  .stock-select:focus {
+    border-color: #007bff; /* Azul */
+    outline: none;
+  }
+  
+  .stock-form-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .stock-submit-button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #28a745; /* Verde */
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .stock-submit-button:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+  }
+  
+  .stock-cancel-button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #dc3545; /* Rojo */
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .stock-cancel-button:hover {
+    background-color: #a71d2a;
+    transform: scale(1.05);
+  }
+  
+  /* Lista de elementos del stock */
+  .stock-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  
+  /* Tarjetas de los elementos */
+  .stock-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    transition: transform 0.2s ease;
+    width: 350px; /* Tamaño fijo para todas las tarjetas */
+    height: 200px; /* Altura fija para todas las tarjetas */
+    position: relative; /* Necesario para posicionar los botones */
+  }
+  
+  .stock-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .stock-card-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333; /* Texto oscuro */
+  }
+  
+  .stock-card-detail {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: #555; /* Color más tenue */
+  }
+
+  .stock-card-detail.date {
+    font-size: 14px; /* Mantén la fecha más pequeña */
+    color: #888; /* Color más tenue para la fecha */
+  }
+  
+  /* Botones de las tarjetas */
+  .stock-edit-button,
+  .stock-delete-button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 8px; /* Botones más pequeños */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: auto; /* No ocupan todo el ancho */
+    height: auto; /* Ajustan su tamaño al contenido */
+  }
+  
+  .stock-edit-button {
+    background-color: transparent;
+    color: #333;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+  
+  .stock-edit-button:hover {
+    background-color: #e0a800;
+    transform: scale(1.05);
+  }
+  
+  .stock-delete-button {
+    background-color: transparent;
+    color: #fff;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .stock-delete-button:hover {
+    background-color: #a71d2a;
+    transform: scale(1.05);
+  }
