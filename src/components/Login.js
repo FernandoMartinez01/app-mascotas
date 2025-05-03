@@ -7,6 +7,7 @@ import { loginUser, loginWithGoogle, getUserHome, createHome, linkToHome } from 
 import { useHome } from "../HomeContext"; // Importar el contexto del hogar
 import { useLoading } from "../context/LoadingContext"; // Importar el contexto de carga
 
+const { version } = require("../../package.json");
 const auth = getAuth(app); // Inicializar auth
 
 const Login = () => {
@@ -167,6 +168,8 @@ const Login = () => {
             </button>
           </>
         )}
+        {/* Mostrar la versión de la app */}
+        <p className="app-version">Versión: {version}</p>
       </div>
     </div>
   );

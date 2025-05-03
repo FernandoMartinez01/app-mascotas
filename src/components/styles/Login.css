@@ -153,3 +153,10 @@
       background-position: bottom; /* Opcional: ajusta la posición para pantallas pequeñas */
     }
   }
+
+  .app-version {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #888;
+    text-align: center;
+  }
