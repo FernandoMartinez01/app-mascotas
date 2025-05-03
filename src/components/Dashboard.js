@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import { app } from "../firebaseConfig";
-import { logoutUser, getLinkedPets, deletePet } from "../authService";
+import { logoutUser, getLinkedPets, deletePet, getUserHome, setCurrentHome } from "../authService";
 import { useHome } from "../HomeContext"; // Importar el contexto del hogar
 import Stock from "./Stock";
 import Calendario from "./Calendario";
@@ -14,7 +14,7 @@ const auth = getAuth(app);
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { currentHome } = useHome(); // Obtener el hogar actual del contexto
+  const { currentHome, loadingHome } = useHome(); // Obtener el hogar actual del contexto
   const [showPetMenu, setShowPetMenu] = useState(false);
   const [showConfigMenu, setShowConfigMenu] = useState(false);
   const [linkedPets, setLinkedPets] = useState([]);
@@ -24,18 +24,28 @@ const Dashboard = () => {
   const [showConfirmPopup, setShowConfirmPopup] = useState(false); // Controla si se muestra el popup
   const [petToDelete, setPetToDelete] = useState(null); // Almacena la mascota que se desea eliminar
   const { setLoading } = useLoading();
+  const { setCurrentHome } = useHome();
+
+  const auth = getAuth(app); // Inicializar auth
 
   // Cargar las mascotas vinculadas al hogar actual
   useEffect(() => {
     const fetchLinkedPets = async () => {
+      if (loadingHome) {
+        return <p>Cargando hogar...</p>; // Mostrar un mensaje de carga mientras se obtiene el hogar
+      }
+      if (!currentHome) {
+        console.error("No se encontró un hogar vinculado. Redirigiendo...");
+        navigate("/home"); // Redirigir al usuario para crear o vincular un hogar
+        return;
+      }
+
       setLoading(true);
       try {
-        if (currentHome) {
-          console.log("Cargando mascotas en el dashboard para el hogar:", currentHome.id);
-          const pets = await getLinkedPets(currentHome.id); // Obtener mascotas vinculadas al hogar actual
-          setLinkedPets(pets);
-          console.log("Mascotas vinculadas cargadas en el dashboard:", pets)
-        }
+        console.log("Cargando mascotas en el dashboard para el hogar:", currentHome.id);
+        const pets = await getLinkedPets(currentHome.id);
+        setLinkedPets(pets);
+        console.log("Mascotas vinculadas cargadas en el dashboard:", pets);
       } catch (error) {
         console.error("Error al obtener mascotas vinculadas:", error.message);
         setError("No se pudieron cargar las mascotas. Intenta nuevamente.");
@@ -45,7 +55,7 @@ const Dashboard = () => {
     };
 
     fetchLinkedPets();
-  }, [currentHome]);
+  }, [currentHome, loadingHome, navigate, setLoading]);
 
   // Mostrar el popup de confirmación
   const handleConfirmDelete = (petId) => {
