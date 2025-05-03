@@ -29,9 +29,9 @@ const Stock = () => {
       }
 
       try {
-        // console.log("Cargando elementos del stock para el hogar:", currentHome.id); // Log para verificar el ID del hogar
+        console.log("Cargando elementos del stock para el hogar:", currentHome.id); // Log para verificar el ID del hogar
         const items = await getStockItems(currentHome.id); // Obtener los elementos del stock vinculados al hogar
-        // console.log("Elementos cargados:", items); // Log para verificar los datos obtenidos
+        console.log("Elementos cargados:", items); // Log para verificar los datos obtenidos
         setStockItems(items); // Actualizar el estado local con los elementos cargados
       } catch (err) {
         console.error("Error al cargar los elementos del stock:", err.message);

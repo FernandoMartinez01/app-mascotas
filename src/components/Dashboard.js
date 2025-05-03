@@ -31,8 +31,10 @@ const Dashboard = () => {
       setLoading(true);
       try {
         if (currentHome) {
+          console.log("Cargando mascotas en el dashboard para el hogar:", currentHome.id);
           const pets = await getLinkedPets(currentHome.id); // Obtener mascotas vinculadas al hogar actual
           setLinkedPets(pets);
+          console.log("Mascotas vinculadas cargadas en el dashboard:", pets)
         }
       } catch (error) {
         console.error("Error al obtener mascotas vinculadas:", error.message);

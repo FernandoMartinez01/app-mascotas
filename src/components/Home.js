@@ -45,13 +45,13 @@ const Home = () => {
 
       const homeId = await createHome(userId, homeName); // Crear el hogar en Firestore
       // console.log("Hogar creado con ID:", homeId); // Verificar si se devuelve un homeId
-      setCurrentHome({ id: homeId, name: homeName }); // Actualizar el contexto con el nuevo hogar
+      setCurrentHome({ id: homeId.id, name: homeName }); // Actualizar el contexto con el nuevo hogar
       // console.log("Contexto actualizado con el hogar:", { id: homeId, name: homeName });
       alert("Hogar creado con éxito."); // Mostrar mensaje de éxito
 
       // Redirigir a Mascota.js
       navigate("/mascota", { state: { homeId } });
-      // console.log("Redirigiendo a Mascota.js con homeId:", homeId);
+      console.log("Redirigiendo a Mascota.js con homeId:", homeId.id);
     } catch (err) {
       console.error("Error al crear el hogar:", err.message);
       setError("Error al crear el hogar: " + err.message);
