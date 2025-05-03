@@ -114,29 +114,32 @@
     transform: scale(1.05);
   }
   
-  /* Lista de elementos del stock */
-  .stock-items {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-  }
-  
-  /* Tarjetas de los elementos */
-  .stock-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    color: #fff;
-    transition: transform 0.2s ease;
-    width: 350px; /* Tamaño fijo para todas las tarjetas */
-    height: 200px; /* Altura fija para todas las tarjetas */
-    position: relative; /* Necesario para posicionar los botones */
-  }
+/* Lista de elementos del stock */
+.stock-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Ajustar el tamaño mínimo */
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  padding: 10px; /* Espaciado interno para evitar que sobresalgan */
+  box-sizing: border-box; /* Asegurar que el padding no afecte el tamaño total */
+}
+
+/* Tarjetas de los elementos */
+.stock-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff; /* Fondo blanco */
+  transition: transform 0.2s ease;
+  width: 100%; /* Ajustar al ancho disponible */
+  height: auto; /* Permitir que la altura se ajuste automáticamente */
+  position: relative; /* Necesario para posicionar los botones */
+  box-sizing: border-box; /* Asegurar que el padding no afecte el tamaño total */
+}
   
   .stock-card:hover {
     transform: scale(1.05);
@@ -201,4 +204,15 @@
   .stock-delete-button:hover {
     background-color: #a71d2a;
     transform: scale(1.05);
+  }
+
+  @media (max-width: 400px) {
+    .stock-items {
+      grid-template-columns: 1fr; /* Una sola columna en pantallas muy pequeñas */
+    }
+  
+    .stock-card {
+      padding: 10px; /* Reducir el padding */
+      border-radius: 8px; /* Bordes más pequeños */
+    }
   }

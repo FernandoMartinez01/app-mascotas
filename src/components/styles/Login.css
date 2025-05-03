@@ -1,162 +1,233 @@
 /* Contenedor principal */
 .login-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-image: url('../../assets/images/login-background.jpg');
-    background-size: cover;
-    background-position: center 80%;
-    background-repeat: no-repeat;
-    padding: 20px;
-  }
-  
-  /* Título principal */
-  .login-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 24px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  /* Formulario */
-  .login-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 400px;
-    gap: 15px;
-  }
-  
-  /* Inputs */
-  .login-input {
-    font-family: 'Quicksand', sans-serif;
-    font-size: 16px;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    outline: none;
-    transition: border-color 0.3s ease;
-  }
-  
-  .login-input:focus {
-    border-color: #007bff;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f6f8;
+  padding: 20px;
+}
 
-  /* Contenedor del formulario con fondo translúcido */
+/* Título principal */
+.login-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* Botón de Google */
+.login-google-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo translúcido */
+  color: #333; /* Texto oscuro */
+  padding: 12px;
+  border-radius: 20px; /* Bordes más redondeados */
+  border: 1px solid #ddd; /* Borde suave */
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+.login-google-button:hover {
+  background-color: rgba(255, 255, 255, 1); /* Fondo más sólido al pasar el cursor */
+  transform: scale(1.05); /* Efecto de zoom */
+}
+
+.google-icon {
+  height: 20px;
+  margin-right: 10px;
+}
+
+/* Separador */
+.login-divider {
+  display: flex;
+  align-items: center;
+  margin: 30px 0;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background-color: #ddd;
+}
+
+.divider-text {
+  margin: 0 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Formulario */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Inputs */
+.login-input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.login-input:focus {
+  border-color: #007bff;
+}
+
+/* Contenedor del formulario con fondo translúcido */
 .login-box {
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco translúcido */
-    padding: 20px; /* Espaciado interno */
-    border-radius: 12px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
-    width: 100%;
-    max-width: 400px; /* Limita el ancho máximo */
-    text-align: center; /* Centra el contenido */
-  }
-  
-/* Botones */
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #444;
+  text-align: left;
+}
+
+/* Opciones */
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.login-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.login-forgot-password {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.login-forgot-password:hover {
+  text-decoration: underline;
+}
+
+/* Botones generales */
 .login-button,
 .login-google-button,
+.login-register,
 .login-register-button,
 .login-back-button {
-  font-family: 'Poppins', sans-serif;
+  margin: 0 auto;
+  font-family: 'Quicksand', sans-serif; /* Fuente amigable */
   font-size: 16px;
   padding: 12px;
   border: none;
-  border-radius: 8px;
+  border-radius: 20px; /* Bordes más redondeados */
   cursor: pointer;
-  transition: background-color 0.3s ease, opacity 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
   margin-bottom: 10px;
   width: 100%; /* Asegura que todos los botones tengan el mismo ancho */
   max-width: 300px; /* Opcional: Limita el ancho máximo */
   text-align: center; /* Centra el texto dentro del botón */
 }
-  
-  /* Botón de inicio de sesión */
-  .login-button {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .login-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Botón de Google */
-  .login-google-button {
-    background-color: #db4437;
-    color: #fff;
-  }
-  
-  .login-google-button:hover {
-    background-color: #a33327;
-  }
-  
-  /* Botón de registro */
-  .login-register-button {
-    background-color: #28a745;
-    color: #fff;
-  }
-  
-  .login-register-button:hover {
-    background-color: #1e7e34;
-  }
-  
-  /* Botón de volver */
-  .login-back-button {
-    background-color: #6c757d;
-    color: #fff;
-  }
-  
-  .login-back-button:hover {
-    background-color: #5a6268;
-  }
-  
-  /* Errores */
-  .login-error {
-    font-family: 'Quicksand', sans-serif;
-    font-size: 14px;
-    color: #ff4d4d;
-    margin-top: 10px;
-    text-align: center;
-  }
-  
-  /* Opciones de hogar */
-  .login-home-options-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 20px;
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .login-home-option {
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .login-home-option-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
-    font-weight: 500;
-    color: #555;
-    margin-bottom: 10px;
-  }
 
-  @media (max-width: 768px) {
-    .login-container {
-      background-size: contain; /* Ajusta la imagen para que se mantenga visible completa */
-      background-position: bottom; /* Opcional: ajusta la posición para pantallas pequeñas */
-    }
-  }
+/* Botón de inicio de sesión */
+.login-button {
+  background-color: #007bff;
+  color: #fff;
+  margin-bottom: 30px;
+}
 
-  .app-version {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #888;
-    text-align: center;
+.login-button:hover {
+  background-color: #0056b3;
+}
+
+/* Botón de registro */
+.login-register-button {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.login-register-button:hover {
+  background-color: #1e7e34;
+}
+
+/* Botón de volver */
+.login-back-button {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.login-back-button:hover {
+  background-color: #5a6268;
+}
+
+/* Errores */
+.login-error {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 14px;
+  color: #ff4d4d;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Opciones de hogar */
+.login-home-options-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.login-home-option {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.login-home-option-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    background-size: contain; /* Ajusta la imagen para que se mantenga visible completa */
+    background-position: bottom; /* Opcional: ajusta la posición para pantallas pequeñas */
   }
+}
+
+.app-version {
+  font-family: 'Quicksand', sans-serif;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #888;
+  text-align: center;
+}

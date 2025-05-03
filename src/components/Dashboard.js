@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth } from "firebase/auth";
-import { app } from "../firebaseConfig";
-import { logoutUser, getLinkedPets, deletePet, getUserHome, setCurrentHome } from "../authService";
+import { logoutUser, getLinkedPets, deletePet} from "../authService";
 import { useHome } from "../HomeContext"; // Importar el contexto del hogar
 import Stock from "./Stock";
 import Calendario from "./Calendario";
 import Salud from "./Salud";
 import "./styles/Dashboard.css";
 import { useLoading } from "../context/LoadingContext";
+import Inicio from "./Inicio"; // Importar la nueva página Inicio
 
-const auth = getAuth(app);
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -19,14 +17,11 @@ const Dashboard = () => {
   const [showConfigMenu, setShowConfigMenu] = useState(false);
   const [linkedPets, setLinkedPets] = useState([]);
   const [currentView, setCurrentView] = useState("Todas");
-  const [currentSection, setCurrentSection] = useState("stock");
+  const [currentSection, setCurrentSection] = useState("inicio");
   const [error, setError] = useState(""); // Estado para manejar errores
   const [showConfirmPopup, setShowConfirmPopup] = useState(false); // Controla si se muestra el popup
   const [petToDelete, setPetToDelete] = useState(null); // Almacena la mascota que se desea eliminar
   const { setLoading } = useLoading();
-  const { setCurrentHome } = useHome();
-
-  const auth = getAuth(app); // Inicializar auth
 
   // Cargar las mascotas vinculadas al hogar actual
   useEffect(() => {
@@ -42,10 +37,10 @@ const Dashboard = () => {
 
       setLoading(true);
       try {
-        console.log("Cargando mascotas en el dashboard para el hogar:", currentHome.id);
+        // console.log("Cargando mascotas en el dashboard para el hogar:", currentHome.id);
         const pets = await getLinkedPets(currentHome.id);
         setLinkedPets(pets);
-        console.log("Mascotas vinculadas cargadas en el dashboard:", pets);
+        // console.log("Mascotas vinculadas cargadas en el dashboard:", pets);
       } catch (error) {
         console.error("Error al obtener mascotas vinculadas:", error.message);
         setError("No se pudieron cargar las mascotas. Intenta nuevamente.");
@@ -139,6 +134,12 @@ const Dashboard = () => {
       {/* Menú de navegación */}
       <nav className="dashboard-nav">
         <button
+          className={`nav-button ${currentSection === "inicio" ? "active" : ""}`}
+          onClick={() => setCurrentSection("inicio")}
+        >
+          Inicio
+        </button>
+        <button
           className={`nav-button ${currentSection === "stock" ? "active" : ""}`}
           onClick={() => {
             setCurrentSection("stock");
@@ -164,6 +165,7 @@ const Dashboard = () => {
   
       {/* Contenido dinámico */}
       <main className="dashboard-main">
+        {currentSection === "inicio" && <Inicio linkedPets={linkedPets} />}
         {currentSection === "stock" && <Stock />}
         {currentSection === "calendario" && (
           <Calendario selectedPet={currentView} />

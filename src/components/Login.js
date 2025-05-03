@@ -1,22 +1,16 @@
 import React, { useState } from "react";
 import "./styles/Login.css";
 import { useNavigate } from "react-router-dom";
-import { getAuth } from "firebase/auth"; // Importar getAuth
-import { app } from "../firebaseConfig"; // Importar la configuración de Firebase
-import { loginUser, loginWithGoogle, getUserHome, createHome, linkToHome } from "../authService";
+import { loginUser, loginWithGoogle, getUserHome } from "../authService";
 import { useHome } from "../HomeContext"; // Importar el contexto del hogar
 import { useLoading } from "../context/LoadingContext"; // Importar el contexto de carga
 
 const { version } = require("../../package.json");
-const auth = getAuth(app); // Inicializar auth
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [showHomeOptions, setShowHomeOptions] = useState(false); // Controla si se muestran las opciones de hogar
-  const [homeName, setHomeName] = useState(""); // Nombre del hogar para crear
-  const [homeCode, setHomeCode] = useState(""); // Código del hogar para vincular
+  const [setError] = useState("");
   const { setCurrentHome } = useHome(); // Usar el contexto del hogar
   const { setLoading } = useLoading(); // Usar el contexto de carga
   const navigate = useNavigate();
@@ -65,44 +59,6 @@ const Login = () => {
     }
   };
 
-  // Manejar la creación de un nuevo hogar
-  const handleCreateHome = async () => {
-    setLoading(true); // Activar el indicador de carga
-    try {
-      const userId = auth.currentUser?.uid; // Usar el usuario autenticado actual
-      if (!userId) {
-        throw new Error("No se encontró un usuario autenticado. Por favor, inicia sesión nuevamente.");
-      }
-
-      const homeId = await createHome(userId, homeName); // Crear un nuevo hogar
-      setCurrentHome({ id: homeId, name: homeName }); // Guardar el nuevo hogar en el contexto
-      navigate("/mascota", { state: { homeId } }); // Redirigir a Mascota.js con el nuevo hogar
-    } catch (err) {
-      setError("Error al crear el hogar: " + err.message);
-    } finally {
-      setLoading(false); // Desactivar el indicador de carga
-    }
-  };
-
-  // Manejar la vinculación a un hogar existente
-  const handleLinkToHome = async () => {
-    setLoading(true); // Activar el indicador de carga
-    try {
-      const userId = auth.currentUser?.uid; // Usar el usuario autenticado actual
-      if (!userId) {
-        throw new Error("No se encontró un usuario autenticado. Por favor, inicia sesión nuevamente.");
-      }
-
-      await linkToHome(homeCode, userId); // Vincular al hogar existente
-      setCurrentHome({ id: homeCode }); // Guardar el hogar vinculado en el contexto
-      navigate("/dashboard", { state: { homeId: homeCode } }); // Redirigir al Dashboard con el hogar vinculado
-    } catch (err) {
-      setError("Error al vincular al hogar: " + err.message);
-    } finally {
-      setLoading(false); // Desactivar el indicador de carga
-    }
-  };
-
   const handleRegisterRedirect = () => {
     navigate("/register"); // Redirigir al formulario de registro
   };
@@ -111,64 +67,58 @@ const Login = () => {
     <div className="login-container">
       <div className="login-box">
         <h2 className="login-title">Iniciar sesión</h2>
-        {!showHomeOptions ? (
-          <>
-            <form className="login-form" onSubmit={handleSubmit}>
-              <input
-                className="login-input"
-                type="email"
-                placeholder="Correo electrónico"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <input
-                className="login-input"
-                type="password"
-                placeholder="Contraseña"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button className="login-button" type="submit">Iniciar sesión</button>
-            </form>
-            <button className="login-google-button" onClick={handleGoogleLogin}>
-              Iniciar sesión con Google
-            </button>
-            <button className="login-register-button" onClick={handleRegisterRedirect}>
-              Registrarse
-            </button>
-            {error && <p className="login-error">{error}</p>}
-          </>
-        ) : (
-          <>
-            <h3 className="login-home-options-title">Elige una opción para continuar</h3>
-            <div className="login-home-option">
-              <h4 className="login-home-option-title">Crear un nuevo hogar</h4>
-              <input
-                className="login-input"
-                type="text"
-                placeholder="Nombre del hogar"
-                value={homeName}
-                onChange={(e) => setHomeName(e.target.value)}
-              />
-              <button className="login-button" onClick={handleCreateHome}>Crear hogar</button>
-            </div>
-            <div className="login-home-option">
-              <h4 className="login-home-option-title">Vincularse a un hogar existente</h4>
-              <input
-                className="login-input"
-                type="text"
-                placeholder="Código del hogar"
-                value={homeCode}
-                onChange={(e) => setHomeCode(e.target.value)}
-              />
-              <button className="login-button" onClick={handleLinkToHome}>Vincular hogar</button>
-            </div>
-            <button className="login-back-button" onClick={() => setShowHomeOptions(false)}>
-              Volver
-            </button>
-          </>
-        )}
-        {/* Mostrar la versión de la app */}
+        <p className="login-subtitle"></p>
+        <button className="login-google-button" onClick={handleGoogleLogin}>
+          <img
+            className="google-icon"
+            src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-google.png"
+            alt="Google"
+          />
+          Iniciar sesión con Google
+        </button>
+        <div className="login-divider">
+          <hr className="divider-line" />
+          <span className="divider-text">o</span>
+          <hr className="divider-line" />
+        </div>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <label htmlFor="email" className="login-label">
+            Correo electrónico
+          </label>
+          <input
+            id="email"
+            className="login-input"
+            type="email"
+            placeholder="correo@ejemplo.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <label htmlFor="password" className="login-label">
+            Contraseña
+          </label>
+          <input
+            id="password"
+            className="login-input"
+            type="password"
+            placeholder="Ingresa tu contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {/* <div className="login-options">
+            <a href="#" className="login-forgot-password">
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div> */}
+          <button className="login-button" type="submit">
+            Iniciar sesión
+          </button>
+        </form>
+        <p className="login-register">
+          ¿No tienes cuenta?{" "}
+          <a href="#" onClick={handleRegisterRedirect}>
+            Regístrate aquí
+          </a>
+        </p>
         <p className="app-version">Versión: {version}</p>
       </div>
     </div>

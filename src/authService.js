@@ -15,6 +15,7 @@ import {
 import app from "./firebaseConfig"; // Import the initialized Firebase app
 import { db } from './firebaseConfig';
 import { v4 as uuidv4 } from "uuid";
+import { browserLocalPersistence, setPersistence } from "firebase/auth";
 
 
 const auth = getAuth(app); // Pass the initialized app to getAuth()
@@ -33,6 +34,7 @@ export const registerUser = async (email, password) => {
 // Método para login con correo
 export const loginUser = async (email, password) => {
   try {
+    await setPersistence(auth, browserLocalPersistence);
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential.user;
   } catch (error) {
@@ -44,6 +46,7 @@ export const loginUser = async (email, password) => {
 // Método para login con Google
 export const loginWithGoogle = async () => {
   try {
+    await setPersistence(auth, browserLocalPersistence);
     const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
@@ -73,8 +76,8 @@ export const logoutUser = async () => {
 export const createHome = async (userId, homeName) => {
   try {
 
-    console.log("Iniciando creación del hogar...");
-    console.log("Datos enviados:", { userId, homeName });
+    // console.log("Iniciando creación del hogar...");
+    // console.log("Datos enviados:", { userId, homeName });
 
     const homeRef = collection(db, "homes");
     const homeDoc = await addDoc(homeRef, {
@@ -84,12 +87,12 @@ export const createHome = async (userId, homeName) => {
       createdAt: Timestamp.now(), // Fecha de creación
     });
 
-    console.log("Hogar creado en Firebase con ID:", homeDoc.id);
+    // console.log("Hogar creado en Firebase con ID:", homeDoc.id);
 
     // Agregar el ID del documento al propio documento
     await updateDoc(homeDoc, { id: homeDoc.id });
 
-    console.log("Hogar creado con ID:", homeDoc.id); // Verificar el ID del hogar
+    // console.log("Hogar creado con ID:", homeDoc.id); // Verificar el ID del hogar
 
     // Retornar el ID y los datos que acabas de guardar
     return {
@@ -129,17 +132,17 @@ export const linkToHome = async (homeId, userId) => {
 // **Obtener el hogar del usuario**
 export const getUserHome = async (userId) => {
   try {
-    console.log("Buscando hogar para el usuario con ID:", userId);
+    // console.log("Buscando hogar para el usuario con ID:", userId);
     
     const homesQuery = query(collection(db, "homes"), where("sharedWith", "array-contains", userId));
     const querySnapshot = await getDocs(homesQuery);
 
     if (!querySnapshot.empty) {
       const home = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))[0];
-      console.log("Hogar encontrado:", home);
+      // console.log("Hogar encontrado:", home);
       return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))[0]; // Retornar el primer hogar encontrado
     }
-    console.log("No se encontró un hogar para el usuario.");
+    // console.log("No se encontró un hogar para el usuario.");
     return null; // Si no hay hogar, retornar null
   } catch (error) {
     console.error("Error al obtener el hogar del usuario:", error.message);
@@ -150,8 +153,8 @@ export const getUserHome = async (userId) => {
 // **Crear una mascota**
 export const createPet = async (petData, homeId) => {
   try {
-    console.log("Iniciando creación de mascota...");
-    console.log("Datos enviados:", { petData, homeId });
+    // console.log("Iniciando creación de mascota...");
+    // console.log("Datos enviados:", { petData, homeId });
 
     const linkCode = uuidv4(); // Generar un código único para la mascota
 
@@ -163,7 +166,7 @@ export const createPet = async (petData, homeId) => {
       createdAt: Timestamp.now(), // Fecha de creación
     });
 
-    console.log("Mascota creada en Firebase con ID:", petRef.id);
+    // console.log("Mascota creada en Firebase con ID:", petRef.id);
 
     return { id: petRef.id, linkCode }; // Retornar el ID y el código de vinculación
   } catch (error) {
@@ -197,19 +200,19 @@ export const linkAccount = async (accountCode, userId) => {
 // **Obtener las mascotas vinculadas a un hogar**
 export const getLinkedPets = async (homeId) => {
   try {
-    console.log("Buscando mascotas vinculadas al hogar con ID:", homeId);
+    // console.log("Buscando mascotas vinculadas al hogar con ID:", homeId);
 
     // Ajustar la consulta para comparar el subcampo 'homeId.id'
     const petsQuery = query(collection(db, "pets"), where("homeId", "==", homeId));
     const querySnapshot = await getDocs(petsQuery);
 
     if (querySnapshot.empty) {
-      console.log("No se encontraron mascotas vinculadas al hogar.");
+      // console.log("No se encontraron mascotas vinculadas al hogar.");
       return []; // Retornar un arreglo vacío si no hay resultados
     }
 
     const pets = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    console.log("Mascotas encontradas:", pets);
+    // console.log("Mascotas encontradas:", pets);
     return pets;
   } catch (error) {
     console.error("Error al obtener mascotas vinculadas:", error.message);

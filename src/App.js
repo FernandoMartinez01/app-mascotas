@@ -11,6 +11,7 @@ import Mascota from "./components/Mascota";
 import { HomeProvider } from "./HomeContext"; // Importar el contexto del hogar
 import { LoadingProvider, useLoading } from "./context/LoadingContext";
 import LoadingAnimation from "./components/LoadingAnimation";
+import { onAuthStateChanged } from "firebase/auth";
 
 const auth = getAuth(app); // Inicializar auth
 
@@ -20,16 +21,15 @@ function App() {
   const { loading, setLoading } = useLoading(); // Obtén el estado global de carga
 
   useEffect(() => {
-    const checkUserHome = async () => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setLoading(true); // Activar el indicador de carga
-      const user = auth.currentUser; // Obtener el usuario actual
       if (user) {
         try {
           const home = await getUserHome(user.uid); // Verificar si el usuario ya tiene un hogar
           if (home) {
             setInitialRoute("/dashboard"); // Redirigir al Dashboard si tiene un hogar
           } else {
-            setInitialRoute("/"); // Redirigir al Login si no tiene un hogar
+            setInitialRoute("/home"); // Redirigir a Home si no tiene un hogar
           }
         } catch (error) {
           console.error("Error al verificar el hogar del usuario:", error.message);
@@ -38,11 +38,12 @@ function App() {
           setLoading(false); // Desactivar el indicador de carga
         }
       } else {
-        setLoading(false); // Desactivar el indicador de carga si no hay usuario
+        setInitialRoute("/"); // Redirigir al Login si no hay usuario
+        setLoading(false); // Desactivar el indicador de carga
       }
-    };
-
-    checkUserHome();
+    });
+  
+    return () => unsubscribe(); // Limpiar el listener al desmontar
   }, []);
 
   return (

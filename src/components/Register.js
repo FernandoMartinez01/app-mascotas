@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import "./styles/Register.css";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { registerUser } from "../authService";
-import "../App.css";
-import { useLoading } from "../context/LoadingContext"; // Importar el contexto de carga
+import { useLoading } from "../context/LoadingContext";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -11,23 +10,23 @@ const Register = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
-  const { setLoading } = useLoading(); // Usar el contexto de carga
+  const { setLoading } = useLoading();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess(false);
-    setLoading(true); // Activar el indicador de carga
+    setLoading(true);
 
     try {
-      await registerUser(email, password); // Llamada a la API para registrar al usuario
-      setSuccess(true); // Mostrar mensaje de éxito
-      setEmail(""); // Limpiar el campo de correo
-      setPassword(""); // Limpiar el campo de contraseña
+      await registerUser(email, password);
+      setSuccess(true);
+      setEmail("");
+      setPassword("");
     } catch (err) {
-      setError("Error al registrarse: " + err.message); // Mostrar mensaje de error
+      setError("Error al registrarse: " + err.message);
     } finally {
-      setLoading(false); // Desactivar el indicador de carga
+      setLoading(false);
     }
   };
 
@@ -38,25 +37,36 @@ const Register = () => {
   return (
     <div className="register-container">
       <div className="register-box">
-        <h2 className="register-title">Registrarse</h2>
+        <h2 className="register-title">Crear cuenta</h2>
+        <p className="register-subtitle">Ingresa tu correo y crea una contraseña</p>
         <form className="register-form" onSubmit={handleSubmit}>
+          <label htmlFor="email" className="register-label">
+            Correo electrónico
+          </label>
           <input
+            id="email"
             className="register-input"
             type="email"
-            placeholder="Correo electrónico"
+            placeholder="correo@ejemplo.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+          <label htmlFor="password" className="register-label">
+            Contraseña
+          </label>
           <input
+            id="password"
             className="register-input"
             type="password"
-            placeholder="Contraseña"
+            placeholder="Crea una contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button className="register-button" type="submit">Crear cuenta</button>
+          <button className="register-button" type="submit">
+            Crear cuenta
+          </button>
         </form>
         <button className="register-back-button" onClick={handleBackToLogin}>
           Volver a iniciar sesión

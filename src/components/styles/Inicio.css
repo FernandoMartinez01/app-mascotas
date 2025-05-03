@@ -1,0 +1,73 @@
+.inicio-container {
+    padding: 20px;
+    background-color: #f4f6f8; /* Fondo suave */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  }
+  
+  .inicio-container h1 {
+    font-family: 'Poppins', sans-serif; /* Fuente moderna */
+    font-size: 2.5rem;
+    font-weight: 600; /* Peso medio */
+    margin-bottom: 15px;
+    color: #333; /* Texto oscuro */
+    text-align: center;
+  }
+  
+  .inicio-container h2 {
+    font-family: 'Poppins', sans-serif; /* Fuente moderna */
+    font-size: 1.8rem;
+    font-weight: 500; /* Peso medio */
+    margin-top: 20px;
+    color: #555; /* Texto más claro */
+    border-bottom: 2px solid #ddd; /* Línea decorativa */
+    padding-bottom: 5px;
+  }
+  
+  .mascotas-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+  }
+  
+  .mascota-item {
+    font-family: 'Quicksand', sans-serif; /* Fuente amigable */
+    font-size: 1.2rem;
+    font-weight: 400; /* Peso normal */
+    margin: 8px 0;
+    padding: 10px;
+    background-color: #fff; /* Fondo blanco */
+    border: 1px solid #ddd; /* Borde suave */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .mascota-item:hover {
+    transform: translateY(-3px); /* Efecto de elevación */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra más fuerte */
+  }
+  
+  .notificaciones-panel {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  }
+  
+  .notificaciones-panel h2 {
+    font-family: 'Poppins', sans-serif; /* Fuente moderna */
+    font-size: 1.8rem;
+    font-weight: 500; /* Peso medio */
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .notificaciones-panel p {
+    font-family: 'Quicksand', sans-serif; /* Fuente amigable */
+    font-size: 1rem;
+    font-weight: 400; /* Peso normal */
+    color: #666;
+  }
