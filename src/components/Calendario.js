@@ -173,10 +173,10 @@ const Calendario = ({ selectedPet }) => {
       {/* Popup inicial */}
       {showPopup && !popupType && (
         <div className="popup popup-calendario">
-          <div className="popup-content">
-            <h3 className="popup-title">Selecciona el tipo de evento</h3>
+          <div className="calendar-popup-content">
+            <h3 className="calendar-popup-title">Selecciona el tipo de evento</h3>
             <button
-              className="popup-button"
+              className="calendar-popup-button"
               onClick={() => {
                 setPopupType("comida");
                 fetchStockItems("comida");
@@ -184,11 +184,11 @@ const Calendario = ({ selectedPet }) => {
             >
               Comida
             </button>
-            <button className="popup-button" onClick={() => setPopupType("baño")}>
+            <button className="calendar-popup-button" onClick={() => setPopupType("baño")}>
               Baño
             </button>
             <button
-              className="popup-button"
+              className="calendar-popup-button"
               onClick={() => {
                 setPopupType("medicamentos");
                 fetchStockItems("medicamentos");
@@ -196,7 +196,7 @@ const Calendario = ({ selectedPet }) => {
             >
               Medicamentos
             </button>
-            <button className="popup-close" onClick={() => setShowPopup(false)}>
+            <button className="calendar-popup-close" onClick={() => setShowPopup(false)}>
               Cerrar
             </button>
           </div>
@@ -206,17 +206,17 @@ const Calendario = ({ selectedPet }) => {
       {/* Popup para comida */}
       {popupType === "comida" && (
         <div className="popup popup-calendario">
-          <div className="popup-content">
-            <h3 className="popup-title">Agregar Evento de Comida</h3>
+          <div className="calendar-popup-content">
+            <h3 className="calendar-popup-title">Agregar Evento de Comida</h3>
             {stockItems.map((item) => (
-              <div key={item.id} className="popup-item">
+              <div key={item.id} className="calendar-popup-item">
                 <label>
                   {item.name} (Disponible: {item.quantity})
                   <input
                     type="number"
                     min="0"
                     placeholder="Cantidad"
-                    className="popup-input"
+                    className="calendar-popup-input"
                     onChange={(e) =>
                       handleSelectItem(item.id, parseInt(e.target.value, 10) || 0)
                     }
@@ -224,22 +224,22 @@ const Calendario = ({ selectedPet }) => {
                 </label>
               </div>
             ))}
-            <label className="popup-label">
+            <label className="calendar-popup-label">
               Fecha y Hora:
               <input
                 type="datetime-local"
                 value={eventDate}
                 onChange={(e) => setEventDate(e.target.value)}
-                className="popup-input"
+                className="calendar-popup-input"
               />
             </label>
             <button
-              className="popup-button"
+              className="calendar-popup-button"
               onClick={() => handleCreateEvent("Comida")}
             >
               Aceptar
             </button>
-            <button className="popup-close" onClick={() => setPopupType("")}>
+            <button className="calendar-popup-close" onClick={() => setPopupType("")}>
               Volver
             </button>
           </div>
@@ -249,23 +249,23 @@ const Calendario = ({ selectedPet }) => {
       {/* Popup para baño */}
       {popupType === "baño" && (
         <div className="popup popup-calendario">
-          <div className="popup-content">
-            <h3 className="popup-title">Agregar Evento de Baño</h3>
+          <div className="calendar-popup-content">
+            <h3 className="calendar-popup-title">Agregar Evento de Baño</h3>
             <div className="bath-options">
               <button
-                className="popup-button bath-button"
+                className="calendar-popup-button bath-button"
                 onClick={() => handleCreateEvent("Pis")}
               >
                 Pis
               </button>
               <button
-                className="popup-button bath-button"
+                className="calendar-popup-button bath-button"
                 onClick={() => handleCreateEvent("Caca")}
               >
                 Caca
               </button>
             </div>
-            <label className="popup-label">
+            <label className="calendar-popup-label">
               Fecha y Hora:
               <input
                 type="datetime-local"
@@ -274,7 +274,7 @@ const Calendario = ({ selectedPet }) => {
                 className="popup-input"
               />
             </label>
-            <button className="popup-close" onClick={() => setPopupType("")}>
+            <button className="calendar-popup-close" onClick={() => setPopupType("")}>
               Volver
             </button>
           </div>
@@ -284,17 +284,17 @@ const Calendario = ({ selectedPet }) => {
       {/* Popup para medicamentos */}
       {popupType === "medicamentos" && (
         <div className="popup popup-calendario">
-          <div className="popup-content">
-            <h3 className="popup-title">Agregar Evento de Medicamentos</h3>
+          <div className="calendar-popup-content">
+            <h3 className="calendar-popup-title">Agregar Evento de Medicamentos</h3>
             {stockItems.map((item) => (
-              <div key={item.id} className="popup-item">
+              <div key={item.id} className="calendar-popup-item">
                 <label>
                   {item.name} (Disponible: {item.quantity})
                   <input
                     type="number"
                     min="0"
                     placeholder="Cantidad"
-                    className="popup-input"
+                    className="calendar-popup-input"
                     onChange={(e) =>
                       handleSelectItem(item.id, parseInt(e.target.value, 10) || 0)
                     }
@@ -302,22 +302,22 @@ const Calendario = ({ selectedPet }) => {
                 </label>
               </div>
             ))}
-            <label className="popup-label">
+            <label className="calendar-popup-label">
               Fecha y Hora:
               <input
                 type="datetime-local"
                 value={eventDate}
                 onChange={(e) => setEventDate(e.target.value)}
-                className="popup-input"
+                className="calendar-popup-input"
               />
             </label>
             <button
-              className="popup-button"
+              className="calendar-popup-button"
               onClick={() => handleCreateEvent("Medicamentos")}
             >
               Aceptar
             </button>
-            <button className="popup-close" onClick={() => setPopupType("")}>
+            <button className="calendar-popup-close" onClick={() => setPopupType("")}>
               Volver
             </button>
           </div>
@@ -327,9 +327,9 @@ const Calendario = ({ selectedPet }) => {
       {/* Popup OnSelect */}
       {popupType === "editar" && selectedEvent && (
         <div className="popup popup-calendario">
-          <div className="popup-content">
-            <h3 className="popup-title">Editar Evento</h3>
-            <label className="popup-label">
+          <div className="calendar-popup-content">
+            <h3 className="calendar-popup-title">Editar Evento</h3>
+            <label className="calendar-popup-label">
               Título:
               <input
                 type="text"
@@ -337,10 +337,10 @@ const Calendario = ({ selectedPet }) => {
                 onChange={(e) =>
                   setSelectedEvent({ ...selectedEvent, title: e.target.value })
                 }
-                className="popup-input"
+                className="calendar-popup-input"
               />
             </label>
-            <label className="popup-label">
+            <label className="calendar-popup-label">
               Fecha y Hora:
               <input
                 type="datetime-local"
@@ -354,11 +354,11 @@ const Calendario = ({ selectedPet }) => {
                     end: new Date(e.target.value),
                   })
                 }
-                className="popup-input"
+                className="calendar-popup-input"
               />
             </label>
             <button
-              className="popup-button"
+              className="calendar-popup-button"
               onClick={async () => {
                 await updateCalendarEvent(
                   currentHome.id,
@@ -377,7 +377,7 @@ const Calendario = ({ selectedPet }) => {
               Guardar Cambios
             </button>
             <button
-              className="popup-button"
+              className="calendar-popup-button"
               onClick={async () => {
                 await deleteCalendarEvent(currentHome.id, selectedEvent.id);
                 setEvents((prev) =>
@@ -390,7 +390,7 @@ const Calendario = ({ selectedPet }) => {
               Eliminar Evento
             </button>
             <button
-              className="popup-close"
+              className="calendar-popup-close"
               onClick={() => {
                 setShowPopup(false);
                 setPopupType("");

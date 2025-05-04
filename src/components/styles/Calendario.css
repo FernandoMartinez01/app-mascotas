@@ -46,7 +46,7 @@
   }
 
 /* Contenedor del popup */
-.popup {
+.calendar-popup {
     position: fixed;
     top: 0;
     left: 0;
@@ -60,7 +60,7 @@
   }
   
   /* Contenido del popup */
-  .popup-content {
+  .calendar-popup-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 12px;
@@ -71,7 +71,7 @@
   }
   
   /* Título del popup */
-  .popup-title {
+  .calendar-popup-title {
     font-family: 'Poppins', sans-serif;
     font-size: 20px;
     font-weight: bold;
@@ -80,7 +80,7 @@
   }
 
 /* Botones del popup */
-.popup-button {
+.calendar-popup-button {
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
     font-weight: bold;
@@ -94,13 +94,13 @@
     transition: background-color 0.3s ease, transform 0.2s ease;
   }
   
-  .popup-button:hover {
+  .calendar-popup-button:hover {
     background-color: #218838;
     transform: scale(1.05);
   }
   
   /* Botón de cerrar */
-  .popup-close {
+  .calendar-popup-close {
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
     font-weight: bold;
@@ -114,13 +114,13 @@
     transition: background-color 0.3s ease, transform 0.2s ease;
   }
   
-  .popup-close:hover {
+  .calendar-popup-close:hover {
     background-color: #a71d2a;
     transform: scale(1.05);
   }
   
   /* Entradas del popup */
-  .popup-input {
+  .calendar-popup-input {
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
     padding: 10px;
@@ -131,13 +131,13 @@
     box-sizing: border-box;
   }
   
-  .popup-input:focus {
+  .calendar-popup-input:focus {
     border-color: #007bff; /* Azul */
     outline: none;
   }
   
   /* Etiquetas del popup */
-  .popup-label {
+  .calendar-popup-label {
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
     color: #555;

@@ -1,110 +1,365 @@
 /* Contenedor principal */
 .salud-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #f8f9fa; /* Fondo claro */
-    min-height: 100vh;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Título principal */
+.salud-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Errores */
+.salud-error {
+  color: #dc3545;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Sección de mascotas */
+.pet-section {
+  margin-bottom: 30px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos de secciones */
+.section-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #444;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.section-title:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+/* Detalles de las secciones */
+.section-detail {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+/* Botón para agregar vacuna */
+.add-vaccine-button {
+  background-color: #28a745;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.add-vaccine-button:hover {
+  background-color: #218838;
+}
+
+/* Lista de vacunas */
+.vaccine-item {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  color: #333;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.vaccine-item p {
+  margin: 5px 0;
+}
+
+/* Botón para eliminar vacuna */
+.delete-vaccine-button {
+  background-color: #dc3545;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-vaccine-button:hover {
+  background-color: #c82333;
+}
+
+/* Popup */
+.salud-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Fondo semitransparente */
+  display: flex;
+  justify-content: center;
+  /* Centrar horizontalmente */
+  align-items: center;
+  /* Centrar verticalmente */
+  z-index: 1000;
+  /* Asegurar que esté por encima de otros elementos */
+}
+
+.salud-popup {
+  position: relative;
+  /* Asegura que el popup se posicione dentro del overlay */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* Sombra para destacar */
+  width: 90%;
+  max-width: 400px;
+  animation: fadeIn 0.3s ease-in-out;
+  /* Animación de entrada */
+}
+
+/* Título del popup */
+.salud-popup h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+  /* Centrar el título */
+}
+
+/* Etiquetas del formulario */
+.salud-popup label {
+  display: block;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+/* Campos de entrada */
+.salud-popup input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+}
+
+.salud-popup-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.salud-popup-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+}
+
+.salud-popup-buttons button:first-child {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.salud-popup-buttons button:first-child:hover {
+  background-color: #218838;
+}
+
+.salud-popup-buttons button:last-child {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.salud-popup-buttons button:last-child:hover {
+  background-color: #c82333;
+}
+
+/* Estilo para el menú desplegable */
+.salud-popup select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #555;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto al pasar el mouse */
+.salud-popup select:hover {
+  border-color: #17a2b8;
+  /* Azul claro */
+  box-shadow: 0 0 5px rgba(23, 162, 184, 0.5);
+  /* Sombra azul */
+}
+
+/* Efecto al enfocar */
+.salud-popup select:focus {
+  outline: none;
+  border-color: #17a2b8;
+  /* Azul claro */
+  box-shadow: 0 0 5px rgba(23, 162, 184, 0.8);
+  /* Sombra azul más intensa */
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+    /* Escala inicial */
   }
-  
-  /* Título principal */
-  .salud-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+    /* Escala final */
   }
-  
-  /* Mensajes de error */
-  .salud-error {
-    font-family: 'Quicksand', sans-serif;
-    font-size: 14px;
-    color: #ff4d4d;
-    margin-bottom: 20px;
-  }
-  
-  /* Contenedor de cada mascota */
-  .pet-section {
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-    width: 100%;
-    max-width: 600px;
-  }
-  
-  /* Secciones internas */
-  .section {
-    margin-bottom: 20px;
-  }
-  
-  /* Títulos de las secciones */
-  .section-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
-    font-weight: bold;
-    color: #007bff; /* Azul */
-    margin-bottom: 10px;
-  }
-  
-  /* Detalles de las secciones */
-  .section-detail {
-    font-family: 'Quicksand', sans-serif;
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 5px;
-  }
-  
-  /* Lista de vacunas */
-  .vaccine-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .vaccine-item {
-    font-family: 'Quicksand', sans-serif;
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 5px;
-  }
-  
-  /* Texto cuando no hay vacunas */
-  .no-vaccines {
-    font-family: 'Quicksand', sans-serif;
-    font-size: 14px;
-    color: #888;
-    margin-bottom: 10px;
-  }
-  
-  /* Botón para agregar vacunas */
-  .add-vaccine-button {
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    background-color: #28a745; /* Verde */
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .add-vaccine-button:hover {
-    background-color: #218838;
-    transform: scale(1.05);
-  }
-  
-  /* Historial clínico */
-  .clinical-history {
-    background-color: #f8f9fa; /* Fondo claro */
-    border-radius: 8px;
-    padding: 10px;
-    font-family: 'Quicksand', sans-serif;
-    font-size: 14px;
-    color: #555;
-  }
+}
+
+.add-clinical-entry-button {
+  background-color: #007bff;
+  /* Azul para diferenciarlo */
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px;
+  /* Espaciado inferior */
+}
+
+.add-clinical-entry-button:hover {
+  background-color: #0056b3;
+  /* Azul más oscuro al pasar el mouse */
+}
+
+.add-medication-button {
+  background-color: #17a2b8;
+  /* Color azul claro */
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px;
+  /* Espaciado inferior */
+}
+
+.add-medication-button:hover {
+  background-color: #138496;
+  /* Azul más oscuro al pasar el mouse */
+}
+
+.clinical-entry-item {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  color: #333;
+  background-color: #f8f9fa;
+  /* Fondo claro */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Sombra ligera */
+}
+
+.clinical-entry-item p {
+  margin: 5px 0;
+}
+
+.clinical-entry-item button {
+  background-color: #dc3545;
+  /* Rojo para el botón de eliminar */
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.clinical-entry-item button:hover {
+  background-color: #c82333;
+  /* Rojo más oscuro al pasar el mouse */
+}
+
+.medication-item {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  color: #333;
+  background-color: #f8f9fa;
+  /* Fondo claro */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Sombra ligera */
+}
+
+.medication-item p {
+  margin: 5px 0;
+}
+
+.medication-item button {
+  background-color: #dc3545;
+  /* Rojo para el botón de eliminar */
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.medication-item button:hover {
+  background-color: #c82333;
+  /* Rojo más oscuro al pasar el mouse */
+}
