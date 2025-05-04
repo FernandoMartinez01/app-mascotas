@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getUserHome } from "./authService";
+import { getUserHome } from "./services/auth/homeService";
 import { app } from "./firebaseConfig";
 
 const HomeContext = createContext();

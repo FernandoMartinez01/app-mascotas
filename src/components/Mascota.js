@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { createPet } from "../authService"; // Importar la función para crear una mascota
+import { createPet } from "../services/auth/petService"; // Importar la función para crear una mascota
 import { useHome } from "../HomeContext"; // Importar el contexto del hogar
 import { useLoading } from "../context/LoadingContext"; // Importar el contexto de carga
 import CELLS from "vanta/dist/vanta.cells.min";

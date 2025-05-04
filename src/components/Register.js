@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./styles/Register.css";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../authService";
+import { registerUser } from "../services/auth/authService";
 import { useLoading } from "../context/LoadingContext";
 
 const Register = () => {

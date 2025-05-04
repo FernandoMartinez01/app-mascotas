@@ -4,7 +4,8 @@ import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useHome } from "../HomeContext";
-import { getCalendarEvents, createCalendarEvent, getStockItems, updateStockItem, updateCalendarEvent, deleteCalendarEvent } from "../authService";
+import { getCalendarEvents, createCalendarEvent, updateCalendarEvent, deleteCalendarEvent } from "../services/auth/calendarService";
+import { getStockItems, updateStockItem } from "../services/auth/stockService";
 import { useLoading } from "../context/LoadingContext";
 
 const localizer = momentLocalizer(moment);

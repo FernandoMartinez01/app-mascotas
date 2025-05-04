@@ -2,14 +2,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth"; // Importar getAuth
 import { app } from "./firebaseConfig"; // Importar la configuración de Firebase
-import { getUserHome } from "./authService"; // Nueva función para obtener el hogar del usuario
+import { getUserHome } from "./services/auth/homeService"; // Nueva función para obtener el hogar del usuario
 import Login from "./components/Login";
 import Home from "./components/Home";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
 import Mascota from "./components/Mascota";
 import { HomeProvider } from "./HomeContext"; // Importar el contexto del hogar
-import { LoadingProvider, useLoading } from "./context/LoadingContext";
+import { useLoading } from "./context/LoadingContext";
 import LoadingAnimation from "./components/LoadingAnimation";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -51,16 +51,6 @@ function App() {
         {loading && <LoadingAnimation />} {/* Mostrar la animación si loading es true */}
         <Router>
           <div>
-            {/* <header
-              style={{
-                backgroundColor: "#007bff",
-                color: "#fff",
-                padding: "10px 20px",
-                textAlign: "center",
-              }}
-            >
-              <h1>App Mascotas</h1>
-            </header> */}
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/home" element={<Home />} />

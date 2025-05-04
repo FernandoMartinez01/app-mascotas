@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./styles/Salud.css";
-import { getLinkedPets } from "../authService";
+import { getLinkedPets } from "../services/auth/petService";
+import { addVaccine, getVaccines, deleteVaccine } from "../services/auth/saludService";
 import { useLoading } from "../context/LoadingContext";
 
 const Salud = ({ selectedPet, currentHome }) => {
@@ -14,7 +15,6 @@ const Salud = ({ selectedPet, currentHome }) => {
       try {
         if (currentHome) {
           const linkedPets = await getLinkedPets(currentHome.id); // Obtener mascotas vinculadas al hogar
-          // console.log("Mascotas vinculadas:", linkedPets); // Log para depurar
           setPets(linkedPets);
         }
       } catch (err) {
@@ -24,23 +24,36 @@ const Salud = ({ selectedPet, currentHome }) => {
         setLoading(false); // Desactivar el indicador de carga
       }
     };
-  
+
     fetchPets();
   }, [currentHome]);
 
   // Filtrar mascotas según la selección
   const filteredPets =
-  selectedPet === "Todas"
-    ? pets
-    : pets.filter((pet) => pet.name === selectedPet);
+    selectedPet === "Todas"
+      ? pets
+      : pets.filter((pet) => pet.name === selectedPet);
+
+  // Estado para manejar los desplegables
+  const [expandedSections, setExpandedSections] = useState({});
+
+  const toggleSection = (petId, section) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [petId]: {
+        ...prev[petId],
+        [section]: !prev[petId]?.[section],
+      },
+    }));
+  };
 
   return (
     <div className="salud-container">
       <h2 className="salud-title">Salud</h2>
-  
+
       {/* Mostrar errores */}
       {error && <p className="salud-error">{error}</p>}
-  
+
       {/* Sección de mascotas filtradas */}
       {filteredPets.map((pet) => (
         <div key={pet.id} className="pet-section">
@@ -52,42 +65,87 @@ const Salud = ({ selectedPet, currentHome }) => {
             </p>
             <p className="section-detail">
               <strong>Fecha de Nacimiento:</strong> {pet.birthDate} (
-              {new Date().getFullYear() - new Date(pet.birthDate).getFullYear()} años)
+              {new Date().getFullYear() - new Date(pet.birthDate).getFullYear()}{" "}
+              años)
             </p>
             <p className="section-detail">
               <strong>Peso:</strong> {parseFloat(pet.weight)} kg
             </p>
           </div>
-  
+
           {/* Vacunas */}
-          <div className="section vaccines">
-            <h3 className="section-title">Vacunas</h3>
-            {pet.vaccines?.length > 0 ? (
-              <ul className="vaccine-list">
-                {pet.vaccines.map((vaccine, index) => (
-                  <li key={index} className="vaccine-item">
-                    <strong>{vaccine.name}</strong>: {vaccine.date} (Vence:{" "}
-                    {vaccine.expiryDate})
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="no-vaccines">No hay vacunas registradas.</p>
-            )}
-            <button
-              className="add-vaccine-button"
-              onClick={() => alert("Agregar vacuna")}
+          <div className="section">
+            <h3
+              className="section-title"
+              onClick={() => toggleSection(pet.id, "vacunas")}
             >
-              Agregar Vacuna
-            </button>
+              Vacunas
+            </h3>
+            {expandedSections[pet.id]?.vacunas && (
+              <div className="section-content">
+                <p>Contenido de vacunas aquí.</p>
+              </div>
+            )}
           </div>
-  
+
           {/* Historial clínico */}
-          <div className="section clinical-history">
-            <h3 className="section-title">Historial Clínico</h3>
-            <p className="section-detail">
-              Información adicional sobre la salud de la mascota.
-            </p>
+          <div className="section">
+            <h3
+              className="section-title"
+              onClick={() => toggleSection(pet.id, "historialClinico")}
+            >
+              Historial Clínico
+            </h3>
+            {expandedSections[pet.id]?.historialClinico && (
+              <div className="section-content">
+                <p>Contenido del historial clínico aquí.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Medicaciones activas */}
+          <div className="section">
+            <h3
+              className="section-title"
+              onClick={() => toggleSection(pet.id, "medicaciones")}
+            >
+              Medicaciones Activas
+            </h3>
+            {expandedSections[pet.id]?.medicaciones && (
+              <div className="section-content">
+                <p>Contenido de medicaciones activas aquí.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Estudios y análisis */}
+          <div className="section">
+            <h3
+              className="section-title"
+              onClick={() => toggleSection(pet.id, "estudios")}
+            >
+              Estudios y Análisis
+            </h3>
+            {expandedSections[pet.id]?.estudios && (
+              <div className="section-content">
+                <p>Contenido de estudios y análisis aquí.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Notas del dueño */}
+          <div className="section">
+            <h3
+              className="section-title"
+              onClick={() => toggleSection(pet.id, "notas")}
+            >
+              Notas del Dueño
+            </h3>
+            {expandedSections[pet.id]?.notas && (
+              <div className="section-content">
+                <p>Contenido de notas del dueño aquí.</p>
+              </div>
+            )}
           </div>
         </div>
       ))}

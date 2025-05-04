@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./styles/Login.css";
 import { useNavigate } from "react-router-dom";
-import { loginUser, loginWithGoogle, getUserHome } from "../authService";
+import { loginUser, loginWithGoogle } from "../services/auth/authService";
+import { getUserHome } from "../services/auth/homeService";
 import { useHome } from "../HomeContext"; // Importar el contexto del hogar
 import { useLoading } from "../context/LoadingContext"; // Importar el contexto de carga
 

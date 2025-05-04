@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { logoutUser, getLinkedPets, deletePet} from "../authService";
+import { logoutUser } from "../services/auth/authService";
+import { getLinkedPets, deletePet} from "../services/auth/petService";
 import { useHome } from "../HomeContext"; // Importar el contexto del hogar
 import Stock from "./Stock";
 import Calendario from "./Calendario";
@@ -31,7 +32,7 @@ const Dashboard = () => {
       }
       if (!currentHome) {
         console.error("No se encontró un hogar vinculado. Redirigiendo...");
-        navigate("/home"); // Redirigir al usuario para crear o vincular un hogar
+        navigate("/"); // Redirigir al usuario para crear o vincular un hogar
         return;
       }
 

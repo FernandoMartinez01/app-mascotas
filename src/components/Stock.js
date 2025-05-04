@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./styles/Stock.css";
 import { useHome } from "../HomeContext"; // Importar el contexto del hogar
-import { createStockItem, getStockItems, updateStockItem, deleteStockItem } from "../authService"; // Funciones para manejar el stock
+import { createStockItem, getStockItems, updateStockItem, deleteStockItem } from "../services/auth/stockService"; // Funciones para manejar el stock
 import { useLoading } from "../context/LoadingContext";
 
 const Stock = () => {

@@ -3,7 +3,7 @@ import "./styles/Home.css";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import { app } from "../firebaseConfig";
-import { createHome, linkToHome } from "../authService"; // Importar funciones para crear y vincular hogar
+import { createHome, linkToHome } from "../services/auth/homeService"; // Importar funciones para crear y vincular hogar
 import { useHome } from "../HomeContext"; // Importar el contexto del hogar
 import { useLoading } from "../context/LoadingContext"; // Importar el contexto de carga
 import CLOUDS from "vanta/dist/vanta.clouds.min";
